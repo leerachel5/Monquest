@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "TextureManager.hpp"
 
 namespace {
     SDL_Texture *playerTex;
@@ -29,17 +30,12 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
             std::cout << "Renderer created!..." << std::endl;
         }
         
-        SDL_Surface *tmpSurface = IMG_Load("assets/player.png");
-        if (tmpSurface) {
-            playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-            std::cout << "Player texture created!..." << std::endl;
-            SDL_FreeSurface(tmpSurface);
-        }
-        
         isRunning = true;
     } else {
         isRunning = false;
     }
+    
+    playerTex = TextureManager::LoadTexture("assets/player.png", renderer);
 }
 
 void Game::handleEvents() {
