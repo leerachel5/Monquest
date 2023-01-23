@@ -9,15 +9,27 @@ public:
     Vector2D position;
     Vector2D velocity;
     
+    int height = 26;
+    int width = 11;
+    int scale = 1;
+    
     int speed = 3;
 
 public:
     TransformComponent()
         : position{Vector2D()}
     {}
+    
+    TransformComponent(int sc)
+        : position{Vector2D()}, scale{sc}
+    {}
 
-    TransformComponent(int x, int y)
+    TransformComponent(float x, float y)
         : position{Vector2D(x, y)}
+    {}
+    
+    TransformComponent(float x, float y, int h, int w, int sc)
+        : position{Vector2D(x, y)}, height{h}, width{w}, scale{sc}
     {}
     
     void init() override {
