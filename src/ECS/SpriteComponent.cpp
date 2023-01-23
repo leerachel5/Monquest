@@ -10,7 +10,7 @@ void SpriteComponent::setTex(const char* texturePath) {
 }
 
 void SpriteComponent::init() {
-    position = &entity->getComponent<PositionComponent>();
+    transform = &entity->getComponent<TransformComponent>();
     
     srcRect.x = srcRect.y = 0;
     srcRect.w = srcRect.h = 32;
@@ -18,8 +18,8 @@ void SpriteComponent::init() {
 }
 
 void SpriteComponent::update() {
-    destRect.x = position->x();
-    destRect.y = position->y();
+    destRect.x = (int)transform->position.x;
+    destRect.y = (int)transform->position.y;
 }
 
 void SpriteComponent::draw() {
