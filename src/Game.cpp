@@ -11,8 +11,11 @@ SDL_Event Game::event;
 
 std::vector<ColliderComponent*> Game::colliders;
 
+bool Game::isRunning = false;
+
 auto& player(manager.addEntity());
-auto& wall(manager.addEntity());
+
+const char* mapFilePath = "assets/terrain_ss.png";
 
 enum groupLabels : std::size_t {
     groupMap,
@@ -20,6 +23,10 @@ enum groupLabels : std::size_t {
     groupEnemies,
     groupColliders
 };
+
+auto& tiles(manager.getGroup(groupMap));
+auto& players(manager.getGroup(groupPlayers));
+auto& enemies(manager.getGroup(groupEnemies));
 
 Game::Game()
 {}
@@ -41,18 +48,13 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     }
     map = new Map();
     
-    Map::LoadMap("assets/map1.map", 16, 16);
+    Map::LoadMap("assets/map.map", 16, 16);
     
-    player.addComponent<TransformComponent>(2);
+    player.addComponent<TransformComponent>(4);
     player.addComponent<SpriteComponent>("assets/player.png", true);
     player.addComponent<KeyboardController>();
     player.addComponent<ColliderComponent>("player");
     player.addGroup(groupPlayers);
-    
-    wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
-    wall.addComponent<SpriteComponent>("assets/dirt.png");
-    wall.addComponent<ColliderComponent>("wall");
-    wall.addGroup(groupMap);
 }
 
 void Game::handleEvents() {
@@ -72,14 +74,14 @@ void Game::update() {
     manager.refresh();
     manager.update();
     
-    for (ColliderComponent* cc : colliders) {
-        Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
+    Vector2D pVel = player.getComponent<TransformComponent>().velocity;
+    int pSpeed = player.getComponent<TransformComponent>().speed;
+    
+    for (auto& t : tiles) {
+        t->getComponent<TileComponent>().destRect.x += -(pVel.x * pSpeed);
+        t->getComponent<TileComponent>().destRect.y += -(pVel.y * pSpeed);
     }
 }
-
-auto& tiles(manager.getGroup(groupMap));
-auto& players(manager.getGroup(groupPlayers));
-auto& enemies(manager.getGroup(groupEnemies));
 
 void Game::render() {
     SDL_RenderClear(renderer);
@@ -98,8 +100,8 @@ void Game::clean() {
     SDL_Quit();
 }
 
-void Game::AddTile(int id, int x, int y) {
+void Game::AddTile(int srcX, int srcY, int xpos, int ypos) {
     auto& tile(manager.addEntity());
-    tile.addComponent<TileComponent>(x, y, 32, 32, id);
+    tile.addComponent<TileComponent>(mapFilePath, srcX, srcY, xpos, ypos);
     tile.addGroup(groupMap);
 }
