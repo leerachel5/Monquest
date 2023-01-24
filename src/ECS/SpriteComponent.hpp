@@ -3,11 +3,40 @@
 
 #include "Components.hpp"
 #include "TextureManager.hpp"
+#include "Animation.hpp"
+#include <map>
 #include <SDL2/SDL.h>
 
 class SpriteComponent : public Component {
 public:
+    SpriteComponent() = default;
     SpriteComponent(const char* texturePath) {
+        setTex(texturePath);
+    }
+    
+    SpriteComponent(const char* texturePath, bool isAnimated) {
+        animated = isAnimated;
+        
+        Animation idleSouth = Animation(0, 1, 100);
+        Animation walkSouth = Animation(1, 4, 100);
+        Animation idleWest = Animation(2, 1, 100);
+        Animation walkWest = Animation(3, 4, 100);
+        Animation idleEast = Animation(4, 1, 100);
+        Animation walkEast = Animation(5, 4, 100);
+        Animation idleNorth = Animation(6, 1, 100);
+        Animation walkNorth = Animation(7, 4, 100);
+        
+        animations.emplace("IdleSouth", idleSouth);
+        animations.emplace("WalkSouth", walkSouth);
+        animations.emplace("IdleWest", idleWest);
+        animations.emplace("WalkWest", walkWest);
+        animations.emplace("IdleEast", idleEast);
+        animations.emplace("WalkEast", walkEast);
+        animations.emplace("IdleNorth", idleNorth);
+        animations.emplace("WalkNorth", walkNorth);
+        
+        Play("IdleSouth");
+        
         setTex(texturePath);
     }
     
@@ -28,8 +57,13 @@ public:
     }
 
     void update() {
-        destRect.x = (int)transform->position.x;
-        destRect.y = (int)transform->position.y;
+        if (animated) {
+            srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+            srcRect.y = animIndex * transform->height;
+        }
+        
+        destRect.x = static_cast<int>(transform->position.x);
+        destRect.y = static_cast<int>(transform->position.y);
         destRect.w = transform->width * transform->scale;
         destRect.h = transform->height * transform->scale;
     }
@@ -37,12 +71,25 @@ public:
     void draw() {
         TextureManager::Draw(texture, srcRect, destRect);
     }
+    
+    void Play(const char* animName) {
+        frames = animations[animName].frames;
+        animIndex = animations[animName].index;
+        speed = animations[animName].speed;
+    }
 
+public:
+    int animIndex = 0;
+    std::map<const char*, Animation> animations;
 
 private:
     TransformComponent* transform;
     SDL_Texture* texture;
     SDL_Rect srcRect, destRect;
+    
+    bool animated = false;
+    int frames = 0;
+    int speed = 100;
 };
 
 #endif /* SpriteComponent_hpp */
