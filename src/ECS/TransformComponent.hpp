@@ -23,8 +23,8 @@ public:
     TransformComponent(int sc)
         : scale{sc}
     {
-        position.x = 200;
-        position.y = 200;
+        position.x = 500;
+        position.y = 300;
     }
 
     TransformComponent(float x, float y)

@@ -2,6 +2,10 @@
 
 SDL_Texture* TextureManager::LoadTexture(const char *texture) {
     SDL_Surface *tempSurface = IMG_Load(texture);
+    if (tempSurface == NULL) {
+        std::cout << "Could not load image at path \"" << texture << "\"" << std::endl;
+        exit(1);
+    }
     SDL_Texture *tex = SDL_CreateTextureFromSurface(Game::renderer, tempSurface);
     SDL_FreeSurface(tempSurface);
     
