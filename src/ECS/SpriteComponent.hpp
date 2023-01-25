@@ -10,11 +10,11 @@
 class SpriteComponent : public Component {
 public:
     SpriteComponent() = default;
-    SpriteComponent(const char* texturePath) {
-        setTex(texturePath);
+    SpriteComponent(std::string id) {
+        setTex(id);
     }
     
-    SpriteComponent(const char* texturePath, bool isAnimated) {
+    SpriteComponent(std::string id, bool isAnimated) {
         animated = isAnimated;
         
         Animation idleSouth = Animation(0, 1, 100);
@@ -37,15 +37,14 @@ public:
         
         Play("IdleSouth");
         
-        setTex(texturePath);
+        setTex(id);
     }
     
     ~SpriteComponent() {
-        SDL_DestroyTexture(texture);
     }
 
-    void setTex(const char* texturePath) {
-        texture = TextureManager::LoadTexture(texturePath);
+    void setTex(std::string id) {
+        texture = Game::assets->GetTexture(id);
     }
 
     void init() {

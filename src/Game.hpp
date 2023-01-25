@@ -5,7 +5,9 @@
 #include <SDL2_image/SDL_image.h>
 #include <iostream>
 #include <vector>
+#include "AssetManager.hpp"
 
+class AssetManager;
 class ColliderComponent;
 
 class Game {
@@ -25,6 +27,7 @@ public:
     static SDL_Renderer* renderer;
     static SDL_Event event;
     static SDL_Rect camera;
+    static AssetManager* assets;
     static bool isRunning;
     enum groupLabels : std::size_t {
         groupMap,
