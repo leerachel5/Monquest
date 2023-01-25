@@ -48,6 +48,7 @@ public:
     }
 
     void init() {
+        direction = "South";
         transform = &entity->getComponent<TransformComponent>();
         
         srcRect.x = srcRect.y = 0;
@@ -71,7 +72,7 @@ public:
         TextureManager::Draw(texture, srcRect, destRect);
     }
     
-    void Play(const char* animName) {
+    void Play(std::string animName) {
         frames = animations[animName].frames;
         animIndex = animations[animName].index;
         speed = animations[animName].speed;
@@ -79,7 +80,8 @@ public:
 
 public:
     int animIndex = 0;
-    std::map<const char*, Animation> animations;
+    std::map<std::string, Animation> animations;
+    std::string direction;
 
 private:
     TransformComponent* transform;

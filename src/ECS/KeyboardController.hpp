@@ -19,38 +19,45 @@ public:
         
         if (!currentKeyStates[SDL_SCANCODE_W]) {
             transform->velocity.y = 0;
-            sprite->Play("IdleNorth");
         }
         if (!currentKeyStates[SDL_SCANCODE_A]) {
             transform->velocity.x = 0;
-            sprite->Play("IdleWest");
         }
         if (!currentKeyStates[SDL_SCANCODE_S]) {
             transform->velocity.y = 0;
-            sprite->Play("IdleSouth");
         }
         if (!currentKeyStates[SDL_SCANCODE_D]) {
             transform->velocity.x = 0;
-            sprite->Play("IdleEast");
         }
         
+        bool idle = true;
         if (currentKeyStates[SDL_SCANCODE_W]) {
             transform->velocity.y = -1;
             sprite->Play("WalkNorth");
+            sprite->direction = "North";
+            idle = false;
         }
         if (currentKeyStates[SDL_SCANCODE_A]) {
             transform->velocity.x = -1;
             sprite->Play("WalkWest");
+            sprite->direction = "West";
+            idle = false;
         }
         if (currentKeyStates[SDL_SCANCODE_S]) {
             transform->velocity.y = 1;
             sprite->Play("WalkSouth");
+            sprite->direction = "South";
+            idle = false;
         }
         if (currentKeyStates[SDL_SCANCODE_D]) {
             transform->velocity.x = 1;
             sprite->Play("WalkEast");
+            sprite->direction = "East";
+            idle = false;
         }
-
+        
+        if (idle)
+            sprite->Play("Idle" + sprite->direction);
     }
 };
 
