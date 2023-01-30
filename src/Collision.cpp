@@ -9,9 +9,38 @@ bool Collision::AABB(const SDL_Rect &rectA, const SDL_Rect &rectB) {
 }
 
 bool Collision::AABB(const ColliderComponent& colA, const ColliderComponent& colB) {
-    if (AABB(colA.collider, colB.collider)) {
-//        std::cout << colA.tag << " hit " <<  colB.tag << std::endl;
-        return true;
+    return AABB(colA.collider, colB.collider);
+}
+
+bool Collision::AABB(const SDL_Rect &rectA, const SDL_Rect &rectB, Direction& direction) {
+    if (rectA.y < rectB.y + rectB.h &&
+        rectA.y + rectA.h > rectB.y + rectB.h &&
+        rectA.x + rectA.w > rectB.x &&
+        rectA.x < rectB.x + rectB.w) {
+        direction.N = true;
     }
-    return false;
+    else if (rectA.y + rectA.h > rectB.y &&
+             rectA.y + rectA.h < rectB.y + rectB.h &&
+             rectA.x + rectA.w > rectB.x &&
+             rectA.x < rectB.x + rectB.w) {
+        direction.S = true;
+    }
+    if (rectA.x + rectA.w > rectB.x &&
+             rectA.x + rectA.w < rectB.x + rectB.w &&
+             rectA.y < rectB.y + rectB.h &&
+             rectA.y + rectA.h > rectB.y) {
+        direction.E = true;
+    }
+    else if (rectA.x < rectB.x + rectB.w &&
+             rectA.x > rectB.x &&
+             rectA.y < rectB.y + rectB.h &&
+             rectA.y + rectA.h > rectB.y) {
+        direction.W = true;
+    }
+    
+    return direction.N || direction.S || direction.E || direction.W;
+}
+
+bool Collision::AABB(const ColliderComponent& colA, const ColliderComponent& colB, Direction& direction) {
+    return AABB(colA.collider, colB.collider, direction);
 }

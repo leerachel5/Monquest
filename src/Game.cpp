@@ -16,7 +16,8 @@ AssetManager* Game::assets = new AssetManager(&manager);
 bool Game::isRunning = false;
 
 auto& player(manager.addEntity());
-auto& label(manager.addEntity());
+auto& playerPosLabel(manager.addEntity());
+auto& colliderPosLabel(manager.addEntity());
 
 Game::Game()
 {}
@@ -57,7 +58,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     player.addGroup(groupPlayers);
     
     SDL_Color white = {255, 255, 255, 255};
-    label.addComponent<UILabel>(10, 10, "Test String", "Arial", white);
+    playerPosLabel.addComponent<UILabel>(10, 10, "", "Arial", white);
+    colliderPosLabel.addComponent<UILabel>(250, 10, "", "Arial", white);
     
     assets->CreateProjectile(Vector2D(600.0f, 600.0f), Vector2D(1.0f, 0.0f), 250, 1, "projectile");
     assets->CreateProjectile(Vector2D(500.0f, 600.0f), Vector2D(1.0f, -0.5f), 250, 1, "projectile");
@@ -85,19 +87,28 @@ void Game::handleEvents() {
 
 void Game::update() {
     SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
-    Vector2D playerPos = player.getComponent<TransformComponent>().position;
+    TransformComponent playerTransform = player.getComponent<TransformComponent>();
     
     std::stringstream ss;
-    ss << "Player position: " << playerPos << std::endl;
-    label.getComponent<UILabel>().SetLabelText(ss.str(), "Arial");
+    ss << "Player position: " << playerTransform.position << std::endl;
+    playerPosLabel.getComponent<UILabel>().SetLabelText(ss.str(), "Arial");
     
     manager.refresh();
     manager.update();
     
     for (auto& c : colliders) {
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
-        if (Collision::AABB(cCol, playerCol)) {
-            player.getComponent<TransformComponent>().position = playerPos;
+        Collision::Direction direction;
+        
+        if (Collision::AABB(playerCol, cCol, direction)) {
+            if (direction.N && playerTransform.position.y - playerTransform.velocity.y * playerTransform.speed >= cCol.y + cCol.h)
+                player.getComponent<TransformComponent>().position.y = cCol.y + cCol.h + 1;
+            else if (direction.S && playerTransform.position.y + (playerTransform.height * playerTransform.scale) - (playerTransform.velocity.y * playerTransform.speed) <= cCol.y)
+                player.getComponent<TransformComponent>().position.y = cCol.y - playerTransform.height * playerTransform.scale - 1;
+            else if (direction.E && playerTransform.position.x + (playerTransform.width * playerTransform.scale) - (playerTransform.velocity.x * playerTransform.speed) <= cCol.x)
+                player.getComponent<TransformComponent>().position.x = cCol.x - (playerTransform.width * playerTransform.scale) - 1;
+            else if (direction.W && playerTransform.position.x - playerTransform.velocity.x * playerTransform.speed >= cCol.x + cCol.w)
+                player.getComponent<TransformComponent>().position.x = cCol.x + cCol.w + 1;
         }
     }
     
@@ -132,7 +143,9 @@ void Game::render() {
         p->draw();
     for (auto& p : projectiles)
         p->draw();
-    label.draw();
+    
+    playerPosLabel.draw();
+    colliderPosLabel.draw();
     
     SDL_RenderPresent(renderer);
 }
