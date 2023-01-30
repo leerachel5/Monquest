@@ -48,7 +48,7 @@ public:
     }
 
     void init() {
-        direction = "South";
+        facingDirection = "South";
         transform = &entity->getComponent<TransformComponent>();
         
         srcRect.x = srcRect.y = 0;
@@ -81,7 +81,7 @@ public:
 public:
     int animIndex = 0;
     std::map<std::string, Animation> animations;
-    std::string direction;
+    std::string facingDirection;
 
 private:
     TransformComponent* transform;

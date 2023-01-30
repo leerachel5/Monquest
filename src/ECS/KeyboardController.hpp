@@ -33,31 +33,43 @@ public:
         bool idle = true;
         if (currentKeyStates[SDL_SCANCODE_W]) {
             transform->velocity.y = -1;
-            sprite->Play("WalkNorth");
-            sprite->direction = "North";
+            if (!(sprite->facingDirection == "West" && currentKeyStates[SDL_SCANCODE_A]) &&
+                !(sprite->facingDirection == "East" && currentKeyStates[SDL_SCANCODE_D])) {
+                sprite->Play("WalkNorth");
+                sprite->facingDirection = "North";
+            }
             idle = false;
         }
         if (currentKeyStates[SDL_SCANCODE_A]) {
             transform->velocity.x = -1;
-            sprite->Play("WalkWest");
-            sprite->direction = "West";
+            if (!(sprite->facingDirection == "North" && currentKeyStates[SDL_SCANCODE_W]) &&
+                !(sprite->facingDirection == "South" && currentKeyStates[SDL_SCANCODE_S])) {
+                sprite->Play("WalkWest");
+                sprite->facingDirection = "West";
+            }
             idle = false;
         }
         if (currentKeyStates[SDL_SCANCODE_S]) {
             transform->velocity.y = 1;
-            sprite->Play("WalkSouth");
-            sprite->direction = "South";
+            if (!(sprite->facingDirection == "West" && currentKeyStates[SDL_SCANCODE_A]) &&
+                !(sprite->facingDirection == "East" && currentKeyStates[SDL_SCANCODE_D])) {
+                sprite->Play("WalkSouth");
+                sprite->facingDirection = "South";
+            }
             idle = false;
         }
         if (currentKeyStates[SDL_SCANCODE_D]) {
             transform->velocity.x = 1;
-            sprite->Play("WalkEast");
-            sprite->direction = "East";
+            if (!(sprite->facingDirection == "North" && currentKeyStates[SDL_SCANCODE_W]) &&
+                !(sprite->facingDirection == "South" && currentKeyStates[SDL_SCANCODE_S])) {
+                sprite->Play("WalkEast");
+                sprite->facingDirection = "East";
+            }
             idle = false;
         }
         
         if (idle)
-            sprite->Play("Idle" + sprite->direction);
+            sprite->Play("Idle" + sprite->facingDirection);
     }
 };
 
