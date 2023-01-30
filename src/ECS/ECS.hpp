@@ -137,6 +137,10 @@ public:
         return groupedEntities[mGroup];
     }
     
+    void resetGroup(Group mGroup) {
+        groupedEntities[mGroup].clear();
+    }
+    
     Entity& addEntity() {
         Entity* e = new Entity(*this);
         std::unique_ptr<Entity> uPtr{ e };

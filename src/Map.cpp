@@ -5,14 +5,19 @@
 
 extern Manager manager;
 
-Map::Map(std::string tID, int mScale, int tSize)
-    : textureID{tID}, mapScale{mScale}, tileSize{tSize}, scaledSize{tSize * mScale}
+Map::Map() {}
+
+Map::Map(std::string tID, std::string filePath, int szX, int szY, int mScale, int tSize)
+    : textureID{tID}, path{filePath}, sizeX{szX}, sizeY{szY}, mapScale{mScale}, tileSize{tSize}, scaledSize{tSize * mScale}
 {}
 
 Map::~Map() {
 }
 
-void Map::LoadMap(std::string path, int sizeX, int sizeY) {
+void Map::LoadMap() {
+    manager.resetGroup(Game::groupMap);
+    manager.resetGroup(Game::groupColliders);
+    
     char c;
     std::fstream mapFile;
     mapFile.open(path);
@@ -23,15 +28,15 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY) {
         for (int x = 0; x < sizeX; x++) {
             mapFile.get(c);
             srcY = atoi(&c) * tileSize;
-            
+
             mapFile.get(c);
             srcX = atoi(&c) * tileSize;
-            
+
             AddTile(srcX, srcY, x * scaledSize, y * scaledSize);
             mapFile.ignore();
         }
     }
-    
+
     mapFile.ignore(); // Ignore blank line between terrain map and collider map
     
     for (int y = 0; y < sizeY; y++) {

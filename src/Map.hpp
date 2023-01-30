@@ -5,14 +5,17 @@
 
 class Map {
 public:
-    Map(std::string tID, int mScale, int tSize);
+    Map();
+    Map(std::string tID, std::string filePath, int szX, int szY, int mScale, int tSize);
     ~Map();
     
-    void LoadMap(std::string path, int sizeX, int sizeY);
+    void LoadMap();
     void AddTile(int srcX, int srcY, int xpos, int ypos);
 
 private:
     std::string textureID;
+    std::string path;
+    int sizeX, sizeY;
     int mapScale;
     int tileSize;
     int scaledSize;

@@ -1,10 +1,10 @@
 #include "Game.hpp"
-#include "Map.hpp"
+#include "MapManager.hpp"
 #include "ECS/Components.hpp"
 #include "Collision.hpp"
 #include <sstream>
 
-Map* map;
+MapManager* map;
 Manager manager;
 
 SDL_Renderer* Game::renderer = nullptr;
@@ -45,9 +45,9 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     
     assets->AddFont("Arial", "assets/Arial.ttf", 16);
     
-    map = new Map("terrain", 2, 32);
-    
-    map->LoadMap("assets/map.map", 25, 20);
+    map = new MapManager();
+    map->init("map1", "terrain", "assets/map1.map", 25, 20, 2, 32);
+    map->addMap("map2", "terrain", "assets/map2.map", 25, 20, 2, 32);
     
     player.addComponent<TransformComponent>(1150.0f, 500.0f, 23, 17, 4);
     player.addComponent<SpriteComponent>("player", true);
@@ -67,6 +67,18 @@ void Game::handleEvents() {
     SDL_PollEvent(&event);
 
     switch(event.type) {
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym) {
+                case SDLK_m:
+                    if (map->activeMap == "map1")
+                        map->loadMap("map2");
+                    else
+                        map->loadMap("map1");
+                    break;
+                default:
+                    break;
+            }
+            break;
         case SDL_QUIT:
             isRunning = false;
             break;
@@ -104,8 +116,8 @@ void Game::render() {
     
     for (auto& t : tiles)
         t->draw();
-//    for (auto& c : colliders)
-//        c->draw();
+    for (auto& c : colliders)
+        c->draw();
     for (auto& p : players)
         p->draw();
     
