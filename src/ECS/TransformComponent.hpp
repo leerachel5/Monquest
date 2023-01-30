@@ -1,8 +1,11 @@
 #ifndef TransformComponent_hpp
 #define TransformComponent_hpp
 
-#include "Components.hpp"
+#include "Game.hpp"
 #include "../Vector2D.hpp"
+
+extern Manager manager;
+
 
 class TransformComponent : public Component {
 public:
@@ -39,10 +42,7 @@ public:
         velocity.Zero();
     }
     
-    void update() override {
-        position.x += velocity.x * speed;
-        position.y += velocity.y * speed;
-    }
+    void update() override;
 };
 
 #endif /* TransformComponent_hpp */

@@ -17,7 +17,6 @@ bool Game::isRunning = false;
 
 auto& player(manager.addEntity());
 auto& playerPosLabel(manager.addEntity());
-auto& colliderPosLabel(manager.addEntity());
 
 Game::Game()
 {}
@@ -43,7 +42,6 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     }
     assets->AddTexture("terrain", "assets/terrain_ss.png");
     assets->AddTexture("player", "assets/player.png");
-    assets->AddTexture("projectile", "assets/projectile.png");
     
     assets->AddFont("Arial", "assets/Arial.ttf", 16);
     
@@ -51,7 +49,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     
     map->LoadMap("assets/map.map", 25, 20);
     
-    player.addComponent<TransformComponent>(800.0f, 640.0f, 23, 17, 4);
+    player.addComponent<TransformComponent>(1150.0f, 500.0f, 23, 17, 4);
     player.addComponent<SpriteComponent>("player", true);
     player.addComponent<KeyboardController>();
     player.addComponent<ColliderComponent>("player");
@@ -59,18 +57,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     
     SDL_Color white = {255, 255, 255, 255};
     playerPosLabel.addComponent<UILabel>(10, 10, "", "Arial", white);
-    colliderPosLabel.addComponent<UILabel>(250, 10, "", "Arial", white);
-    
-    assets->CreateProjectile(Vector2D(600.0f, 600.0f), Vector2D(1.0f, 0.0f), 250, 1, "projectile");
-    assets->CreateProjectile(Vector2D(500.0f, 600.0f), Vector2D(1.0f, -0.5f), 250, 1, "projectile");
-    assets->CreateProjectile(Vector2D(400.0f, 600.0f), Vector2D(1.0f, 1.0f), 250, 1, "projectile");
-    assets->CreateProjectile(Vector2D(600.0f, 600.0f), Vector2D(1.0f, -1.0f), 250, 1, "projectile");
 }
 
 auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
-auto& projectiles(manager.getGroup(Game::groupProjectiles));
 
 void Game::handleEvents() {
     SDL_PollEvent(&event);
@@ -86,7 +77,6 @@ void Game::handleEvents() {
 }
 
 void Game::update() {
-    SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
     TransformComponent playerTransform = player.getComponent<TransformComponent>();
     
     std::stringstream ss;
@@ -95,29 +85,6 @@ void Game::update() {
     
     manager.refresh();
     manager.update();
-    
-    for (auto& c : colliders) {
-        SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
-        Collision::Direction direction;
-        
-        if (Collision::AABB(playerCol, cCol, direction)) {
-            if (direction.N && playerTransform.position.y - playerTransform.velocity.y * playerTransform.speed >= cCol.y + cCol.h)
-                player.getComponent<TransformComponent>().position.y = cCol.y + cCol.h + 1;
-            else if (direction.S && playerTransform.position.y + (playerTransform.height * playerTransform.scale) - (playerTransform.velocity.y * playerTransform.speed) <= cCol.y)
-                player.getComponent<TransformComponent>().position.y = cCol.y - playerTransform.height * playerTransform.scale - 1;
-            else if (direction.E && playerTransform.position.x + (playerTransform.width * playerTransform.scale) - (playerTransform.velocity.x * playerTransform.speed) <= cCol.x)
-                player.getComponent<TransformComponent>().position.x = cCol.x - (playerTransform.width * playerTransform.scale) - 1;
-            else if (direction.W && playerTransform.position.x - playerTransform.velocity.x * playerTransform.speed >= cCol.x + cCol.w)
-                player.getComponent<TransformComponent>().position.x = cCol.x + cCol.w + 1;
-        }
-    }
-    
-    for (auto& p : projectiles) {
-        SDL_Rect projectileCol = p->getComponent<ColliderComponent>().collider;
-        if (Collision::AABB(projectileCol, playerCol)) {
-            p->destroy();
-        }
-    }
     
     camera.x = player.getComponent<TransformComponent>().position.x - 400;
     camera.y = player.getComponent<TransformComponent>().position.y - 320;
@@ -137,15 +104,12 @@ void Game::render() {
     
     for (auto& t : tiles)
         t->draw();
-    for (auto& c : colliders)
-        c->draw();
+//    for (auto& c : colliders)
+//        c->draw();
     for (auto& p : players)
-        p->draw();
-    for (auto& p : projectiles)
         p->draw();
     
     playerPosLabel.draw();
-    colliderPosLabel.draw();
     
     SDL_RenderPresent(renderer);
 }
