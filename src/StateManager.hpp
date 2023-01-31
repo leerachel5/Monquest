@@ -14,6 +14,8 @@ public:
     void enterState(std::string stateID);
     void exitState(std::string stateID);
     
+    bool isRunning(std::string stateID);
+    
     void init();
     void handleEvents(SDL_Event& event);
     void update();

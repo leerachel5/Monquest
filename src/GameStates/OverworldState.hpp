@@ -26,8 +26,6 @@ private:
     std::vector<Entity*>& mapLinks;
     std::vector<Entity*>& players;
     std::vector<Entity*>& colliders;
-    
-    bool isRunning;
 };
 
 #endif /* OverworldState_hpp */

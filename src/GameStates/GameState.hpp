@@ -7,7 +7,7 @@
 
 class GameState {
 public:
-    GameState() : mapManager{new MapManager()} {}
+    GameState() : mapManager{new MapManager()}, isRunning{false} {}
     virtual ~GameState() {}
     
     // State transitions
@@ -19,10 +19,15 @@ public:
     virtual void handleEvents(SDL_Event& e) = 0;
     virtual void update() = 0;
     virtual void render() = 0;
+
+public:
+    bool isRunning;
     
 protected:
     Manager manager;
     MapManager* mapManager;
+    
+    SDL_Rect camera = {0, 0, 800, 640};
 };
 
 #endif /* GameState_hpp */

@@ -3,5 +3,6 @@
 
 #include "GameState.hpp"
 #include "OverworldState.hpp"
+#include "MainMenuState.hpp"
 
 #endif /* GameStates_hpp */

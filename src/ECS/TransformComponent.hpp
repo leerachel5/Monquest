@@ -41,6 +41,11 @@ public:
     }
     
     void update() override;
+    
+    SDL_Rect toRect() {
+        SDL_Rect rect = {static_cast<int>(position.x), static_cast<int>(position.y), width * scale, height * scale};
+        return rect;
+    }
 };
 
 #endif /* TransformComponent_hpp */
