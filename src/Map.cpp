@@ -39,8 +39,8 @@ void Map::LoadMap() {
 
     mapFile.ignore(); // Ignore blank line between terrain map and collider map
     
-    for (int y = 0; y < sizeY; y++) {
-        for (int x = 0; x < sizeX; x++) {
+    for (int y = -1; y < sizeY + 1; y++) {
+        for (int x = -1; x < sizeX + 1; x++) {
             mapFile.get(c);
             if (c == '1') {
                 auto& tcol(manager.addEntity());
