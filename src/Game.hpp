@@ -31,6 +31,7 @@ public:
     static bool isRunning;
     enum groupLabels : std::size_t {
         groupMap,
+        groupMapLinks,
         groupPlayers,
         groupColliders,
         groupProjectiles

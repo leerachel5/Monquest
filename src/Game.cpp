@@ -60,6 +60,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
 }
 
 auto& tiles(manager.getGroup(Game::groupMap));
+auto& mapLinks(manager.getGroup(Game::groupMapLinks));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
 
@@ -97,6 +98,14 @@ void Game::update() {
     
     manager.refresh();
     manager.update();
+    
+    for (auto& l : mapLinks) {
+        if (Collision::AABB(player.getComponent<ColliderComponent>().collider, l->getComponent<ColliderComponent>().collider)) {
+            map->loadMap(l->getComponent<LinkComponent>().destMap);
+            player.getComponent<TransformComponent>().position.x = l->getComponent<LinkComponent>().destX;
+            player.getComponent<TransformComponent>().position.y = l->getComponent<LinkComponent>().destY;
+        }
+    }
     
     camera.x = player.getComponent<TransformComponent>().position.x - 400;
     camera.y = player.getComponent<TransformComponent>().position.y - 320;
