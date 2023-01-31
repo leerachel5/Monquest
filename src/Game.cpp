@@ -1,7 +1,9 @@
 #include "Game.hpp"
-#include "GameStates/GameStates.hpp"
+#include "StateManager.hpp"
 
 Manager manager;
+StateManager states;
+
 GameState* overworldState;
 
 SDL_Renderer* Game::renderer = nullptr;
@@ -39,23 +41,24 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     
     assets->AddFont("Arial", "assets/Arial.ttf", 16);
     
-    overworldState = new OverworldState();
-    overworldState->init();
+    states.addState("overworld", new OverworldState());
+    states.enterState("overworld");
+    states.init();
 }
 
 void Game::handleEvents() {
     SDL_PollEvent(&event);
-    overworldState->handleEvent(event);
+    states.handleEvents(event);
 }
 
 void Game::update() {
-    overworldState->update();
+    states.update();
 }
 
 void Game::render() {
     SDL_RenderClear(renderer);
     
-    overworldState->render();
+    states.render();
     
     SDL_RenderPresent(renderer);
 }

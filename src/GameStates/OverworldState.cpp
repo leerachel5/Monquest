@@ -4,14 +4,18 @@
 
 
 OverworldState::OverworldState() : GameState(), tiles{manager.getGroup(Game::groupMap)}, mapLinks{manager.getGroup(Game::groupMapLinks)},
-    players{manager.getGroup(Game::groupPlayers)}, colliders{manager.getGroup(Game::groupColliders)}
+    players{manager.getGroup(Game::groupPlayers)}, colliders{manager.getGroup(Game::groupColliders)}, isRunning{false}
 {}
 
 OverworldState::~OverworldState() {}
 
-void OverworldState::enter() {}
+void OverworldState::enter() {
+    isRunning  = true;
+}
 
-void OverworldState::exit() {}
+void OverworldState::exit() {
+    isRunning = false;
+}
 
 void OverworldState::init() {
     player = &manager.addEntity();
@@ -30,56 +34,61 @@ void OverworldState::init() {
     playerPosLabel->addComponent<UILabel>(10, 10, "", "Arial", white);
 }
 
-void OverworldState::handleEvent(SDL_Event& event) {
-    switch(event.type) {
-        case SDL_QUIT:
-            Game::isRunning = false;
-            break;
-
-        default:
-            break;
+void OverworldState::handleEvents(SDL_Event& event) {
+    if (isRunning) {
+        switch(event.type) {
+            case SDL_QUIT:
+                Game::isRunning = false;
+                break;
+                
+            default:
+                break;
+        }
     }
 }
 
 void OverworldState::update() {
-    TransformComponent playerTransform = player->getComponent<TransformComponent>();
-    
-    std::stringstream ss;
-    ss << "Current map: " << mapManager->activeMap << std::endl;
-    playerPosLabel->getComponent<UILabel>().SetLabelText(ss.str(), "Arial");
-    
-    manager.refresh();
-    manager.update();
-    
-    for (auto& l : mapLinks) {
-        if (Collision::AABB(player->getComponent<ColliderComponent>().collider, l->getComponent<ColliderComponent>().collider)) {
-            mapManager->loadMap(&manager, l->getComponent<LinkComponent>().destMap);
-            player->getComponent<TransformComponent>().position.x = l->getComponent<LinkComponent>().destX;
-            player->getComponent<TransformComponent>().position.y = l->getComponent<LinkComponent>().destY;
+    if (isRunning) {
+        TransformComponent playerTransform = player->getComponent<TransformComponent>();
+        
+        std::stringstream ss;
+        ss << "Current map: " << mapManager->activeMap << std::endl;
+        playerPosLabel->getComponent<UILabel>().SetLabelText(ss.str(), "Arial");
+        
+        manager.refresh();
+        manager.update();
+        
+        for (auto& l : mapLinks) {
+            if (Collision::AABB(player->getComponent<ColliderComponent>().collider, l->getComponent<ColliderComponent>().collider)) {
+                mapManager->loadMap(&manager, l->getComponent<LinkComponent>().destMap);
+                player->getComponent<TransformComponent>().position.x = l->getComponent<LinkComponent>().destX;
+                player->getComponent<TransformComponent>().position.y = l->getComponent<LinkComponent>().destY;
+            }
         }
+        
+        Game::camera.x = player->getComponent<TransformComponent>().position.x - 400;
+        Game::camera.y = player->getComponent<TransformComponent>().position.y - 320;
+        
+        if (Game::camera.x < 0)
+            Game::camera.x = 0;
+        if (Game::camera.y < 0)
+            Game::camera.y = 0;
+        if (Game::camera.x > Game::camera.w)
+            Game::camera.x = Game::camera.w;
+        if (Game::camera.y > Game::camera.h)
+            Game::camera.y = Game::camera.h;
     }
-    
-    Game::camera.x = player->getComponent<TransformComponent>().position.x - 400;
-    Game::camera.y = player->getComponent<TransformComponent>().position.y - 320;
-    
-    if (Game::camera.x < 0)
-        Game::camera.x = 0;
-    if (Game::camera.y < 0)
-        Game::camera.y = 0;
-    if (Game::camera.x > Game::camera.w)
-        Game::camera.x = Game::camera.w;
-    if (Game::camera.y > Game::camera.h)
-        Game::camera.y = Game::camera.h;
 }
 
 void OverworldState::render() {
-    tiles = manager.getGroup(Game::groupMap);
-    for (auto& t : tiles)
-        t->draw();
-    for (auto& c : colliders)
-        c->draw();
-    for (auto& p : players)
-        p->draw();
-
-    playerPosLabel->draw();
+    if (isRunning) {
+        for (auto& t : tiles)
+            t->draw();
+        //    for (auto& c : colliders)
+        //        c->draw();
+        for (auto& p : players)
+            p->draw();
+        
+        playerPosLabel->draw();
+    }
 }
