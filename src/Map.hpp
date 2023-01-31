@@ -1,6 +1,7 @@
 #ifndef Map_hpp
 #define Map_hpp
 
+#include "ECS/ECS.hpp"
 #include <string>
 
 class Map {
@@ -9,8 +10,8 @@ public:
     Map(std::string tID, std::string filePath, int szX, int szY, int mScale, int tSize);
     ~Map();
     
-    void LoadMap();
-    void AddTile(int srcX, int srcY, int xpos, int ypos);
+    void LoadMap(Manager* manager);
+    void AddTile(Manager* manager, int srcX, int srcY, int xpos, int ypos);
 
 private:
     std::string textureID;

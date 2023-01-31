@@ -4,8 +4,6 @@
 #include "Game.hpp"
 #include "../Vector2D.hpp"
 
-extern Manager manager;
-
 
 class TransformComponent : public Component {
 public:

@@ -8,7 +8,6 @@
 #include "ColliderComponent.hpp"
 #include "TileComponent.hpp"
 #include "LinkComponent.hpp"
-#include "ProjectileComponent.hpp"
 #include "UILabel.hpp"
 
 

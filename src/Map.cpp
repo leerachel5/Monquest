@@ -5,7 +5,14 @@
 #include <fstream>
 #include <sstream>
 
-extern Manager manager;
+namespace {
+    struct Link {
+        std::string destMap;
+        int destX, destY;
+        
+        Link(std::string dM, int dX, int dY) : destMap{dM}, destX{dX}, destY{dY} {}
+    };
+}
 
 Map::Map() {}
 
@@ -16,10 +23,10 @@ Map::Map(std::string tID, std::string filePath, int szX, int szY, int mScale, in
 Map::~Map() {
 }
 
-void Map::LoadMap() {
-    manager.resetGroup(Game::groupMap);
-    manager.resetGroup(Game::groupColliders);
-    manager.resetGroup(Game::groupMapLinks);
+void Map::LoadMap(Manager* manager) {
+    manager->resetGroup(Game::groupMap);
+    manager->resetGroup(Game::groupColliders);
+    manager->resetGroup(Game::groupMapLinks);
     
     char c;
     std::fstream mapFile;
@@ -35,7 +42,7 @@ void Map::LoadMap() {
             mapFile.get(c);
             srcX = atoi(&c) * tileSize;
 
-            AddTile(srcX, srcY, x * scaledSize, y * scaledSize);
+            AddTile(manager, srcX, srcY, x * scaledSize, y * scaledSize);
             mapFile.ignore();
         }
     }
@@ -46,7 +53,7 @@ void Map::LoadMap() {
         for (int x = -1; x < sizeX + 1; x++) {
             mapFile.get(c);
             if (c == '1') {
-                auto& tcol(manager.addEntity());
+                auto& tcol(manager->addEntity());
                 tcol.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
                 tcol.addGroup(Game::groupColliders);
             }
@@ -55,13 +62,6 @@ void Map::LoadMap() {
     }
     
     mapFile.ignore();
-    
-    struct Link {
-        std::string destMap;
-        int destX, destY;
-        
-        Link(std::string dM, int dX, int dY) : destMap{dM}, destX{dX}, destY{dY} {}
-    };
     
     std::unordered_map<int, Link> linkSpecifiers;
     
@@ -86,7 +86,7 @@ void Map::LoadMap() {
             mapFile.get(c);
             if (c != '0' && isdigit(c)) {
                 Link linkedMap = linkSpecifiers.at(int(c) - '0');
-                auto& link(manager.addEntity());
+                auto& link(manager->addEntity());
                 link.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
                 link.addComponent<LinkComponent>(linkedMap.destMap, linkedMap.destX, linkedMap.destY);
                 link.addGroup(Game::groupMapLinks);
@@ -94,12 +94,11 @@ void Map::LoadMap() {
             mapFile.ignore();
         }
     }
-    
     mapFile.close();
 }
 
-void Map::AddTile(int srcX, int srcY, int xpos, int ypos) {
-    auto& tile(manager.addEntity());
+void Map::AddTile(Manager* manager, int srcX, int srcY, int xpos, int ypos) {
+    auto& tile(manager->addEntity());
     tile.addComponent<TileComponent>(textureID, srcX, srcY, xpos, ypos, tileSize, mapScale);
     tile.addGroup(Game::groupMap);
 }

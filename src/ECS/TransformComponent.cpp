@@ -1,8 +1,11 @@
 #include "TransformComponent.hpp"
 #include "Components.hpp"
 
+extern Manager manager;
+
 void TransformComponent::update() {
-    auto& colliders(manager.getGroup(Game::groupColliders));
+    Manager* manager = &entity->getManager();
+    auto& colliders(manager->getGroup(Game::groupColliders));
     
     for (auto& c : colliders) {
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;

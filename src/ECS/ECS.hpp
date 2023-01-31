@@ -92,6 +92,10 @@ public:
         return *static_cast<T*>(ptr);
     }
     
+    Manager& getManager() {
+        return manager;
+    }
+    
 private:
     Manager& manager;
     
