@@ -34,6 +34,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     } else {
         isRunning = false;
     }
+    if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG) {
+        std::cout << "Error: SDL_image failed to initialize" << std::endl;
+        exit(1);
+    }
     if (TTF_Init() == -1) {
         std::cout << "Error: SDL_TTF failed to initialize" << std::endl;
         exit(1);
