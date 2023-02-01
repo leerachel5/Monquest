@@ -25,6 +25,7 @@ void OverworldState::init() {
     
     mapManager->init(&manager, "map1", "terrain", "assets/map1.map", 25, 20, 2, 32);
     mapManager->addMap("map2", "terrain", "assets/map2.map", 25, 20, 2, 32);
+    mapManager->addMap("map3", "terrain", "assets/map3.map", 50, 50, 2, 32);
     
     player->addComponent<TransformComponent>(1200.0f, 500.0f, 23, 17, 4);
     player->addComponent<SpriteComponent>("player", true);
@@ -52,9 +53,11 @@ void OverworldState::update() {
     
     for (auto& l : mapLinks) {
         if (Collision::AABB(player->getComponent<ColliderComponent>().collider, l->getComponent<ColliderComponent>().collider)) {
-            mapManager->loadMap(&manager, l->getComponent<LinkComponent>().destMap);
-            player->getComponent<TransformComponent>().position.x = l->getComponent<LinkComponent>().destX;
-            player->getComponent<TransformComponent>().position.y = l->getComponent<LinkComponent>().destY;
+            LinkComponent link = l->getComponent<LinkComponent>();
+            mapManager->loadMap(&manager, link.destMap);
+            
+            player->getComponent<TransformComponent>().position.x = link.destX;
+            player->getComponent<TransformComponent>().position.y = link.destY;
         }
     }
     
