@@ -25,6 +25,7 @@ Map::~Map() {
 
 void Map::LoadMap(Manager& manager) {
     manager.resetGroup(OverworldState::groupMap);
+    manager.resetGroup(OverworldState::groupTallGrass);
     manager.resetGroup(OverworldState::groupColliders);
     manager.resetGroup(OverworldState::groupMapLinks);
     
