@@ -6,7 +6,9 @@ StateManager states;
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
-SDL_Rect Game::camera = {0,0,800,640};
+SDL_Rect Game::camera;
+int Game::windowW;
+int Game::windowH;
 
 AssetManager* Game::assets = new AssetManager();
 
@@ -21,6 +23,8 @@ Game::~Game()
 void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         window = SDL_CreateWindow(title, xpos, ypos, width, height, SDL_WINDOW_SHOWN);
+        windowW = width;
+        windowH = height;
         
         renderer = SDL_CreateRenderer(window, -1, 0);
         if (renderer)

@@ -18,9 +18,10 @@ void MainMenuState::exit() {
 }
 
 void MainMenuState::init() {
-    camera = {0,0,800,640};
     Entity* mondexButton = &manager.addEntity();
-    mondexButton->addComponent<TransformComponent>(275, 150, 48, 144, 2);
+    int buttonW = 144;
+    int buttonH = 48;
+    mondexButton->addComponent<TransformComponent>(Game::windowW/2 - buttonW, Game::windowH/2 - buttonH, 144, 48, 2);
     mondexButton->addComponent<SpriteComponent>("start_button", false);
     mondexButton->addComponent<ButtonComponent>();
     mondexButton->addGroup(Game::groupButtons);

@@ -32,8 +32,8 @@ public:
         : position{Vector2D(x, y)}
     {}
     
-    TransformComponent(float x, float y, int h, int w, int sc)
-        : position{Vector2D(x, y)}, height{h}, width{w}, scale{sc}
+    TransformComponent(float x, float y, int w, int h, int sc)
+        : position{Vector2D(x, y)}, width{w}, height{h}, scale{sc}
     {}
     
     void init() override {

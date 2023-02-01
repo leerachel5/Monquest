@@ -27,7 +27,7 @@ protected:
     Manager manager;
     MapManager* mapManager;
     
-    SDL_Rect camera = {0, 0, 800, 640};
+    SDL_Rect camera = {0, 0, Game::windowW, Game::windowH};
 };
 
 #endif /* GameState_hpp */

@@ -12,14 +12,16 @@ public:
     
     void LoadMap(Manager* manager);
     void AddTile(Manager* manager, int srcX, int srcY, int xpos, int ypos);
-
-private:
-    std::string textureID;
-    std::string path;
+    
+public:
     int sizeX, sizeY;
     int mapScale;
     int tileSize;
     int scaledSize;
+    
+private:
+    std::string textureID;
+    std::string path;
 };
 
 #endif /* Map_hpp */

@@ -24,3 +24,7 @@ void MapManager::loadMap(Manager* manager, std::string mapName) {
         activeMap = mapName;
     }
 }
+
+Map& MapManager::getMap(std::string mapID) {
+    return maps.at(mapID);
+}

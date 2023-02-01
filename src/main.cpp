@@ -10,7 +10,7 @@ int main() {
     int frameTime;
     
     Game *game = new Game();
-    game->init("Monquest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640);
+    game->init("Monquest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1300, 768);
     
     while (game->running()) {
         frameStart = SDL_GetTicks();

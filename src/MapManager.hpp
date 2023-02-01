@@ -15,6 +15,8 @@ public:
     
     void addMap(std::string mapName, std::string texID, std::string fPath, int szX, int szY, int mapSc, int tileSz);
     void loadMap(Manager* manager, std::string mapName);
+    
+    Map& getMap(std::string mapID);
 
 public:
     std::string activeMap;

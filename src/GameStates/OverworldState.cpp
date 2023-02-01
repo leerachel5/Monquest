@@ -19,7 +19,6 @@ void OverworldState::exit() {
 }
 
 void OverworldState::init() {
-    camera = {0, 0, 800, 640};
     player = &manager.addEntity();
     playerPosLabel = &manager.addEntity();
     
@@ -27,7 +26,10 @@ void OverworldState::init() {
     mapManager->addMap("map2", "terrain", "assets/map2.map", 25, 20, 2, 32);
     mapManager->addMap("map3", "terrain", "assets/map3.map", 50, 50, 2, 32);
     
-    player->addComponent<TransformComponent>(1200.0f, 500.0f, 23, 17, 4);
+    Map initialMap =  mapManager->getMap(mapManager->activeMap);
+    camera = {0, 0, initialMap.sizeX * initialMap.tileSize, initialMap.sizeY * initialMap.tileSize};
+    
+    player->addComponent<TransformComponent>(1200.0f, 500.0f, 17, 23, 4);
     player->addComponent<SpriteComponent>("player", true);
     player->addComponent<KeyboardController>();
     player->addComponent<ColliderComponent>("player");
@@ -56,22 +58,30 @@ void OverworldState::update() {
             LinkComponent link = l->getComponent<LinkComponent>();
             mapManager->loadMap(&manager, link.destMap);
             
+            Map destMap = mapManager->getMap(link.destMap);
+            camera.w = destMap.sizeX * destMap.tileSize;
+            camera.h = destMap.sizeY * destMap.tileSize;
+            
             player->getComponent<TransformComponent>().position.x = link.destX;
             player->getComponent<TransformComponent>().position.y = link.destY;
         }
     }
     
-    Game::camera.x = player->getComponent<TransformComponent>().position.x - 400;
-    Game::camera.y = player->getComponent<TransformComponent>().position.y - 320;
+    camera.x = player->getComponent<TransformComponent>().position.x - Game::windowW / 2;
+    camera.y = player->getComponent<TransformComponent>().position.y - Game::windowH / 2;
     
-    if (Game::camera.x < 0)
-        Game::camera.x = 0;
-    if (Game::camera.y < 0)
-        Game::camera.y = 0;
-    if (Game::camera.x > Game::camera.w)
-        Game::camera.x = Game::camera.w;
-    if (Game::camera.y > Game::camera.h)
-        Game::camera.y = Game::camera.h;
+    Map activeMap = mapManager->getMap(mapManager->activeMap);
+    
+    if (camera.x < 0)
+        camera.x = 0;
+    if (camera.y < 0)
+        camera.y = 0;
+    if (camera.x > camera.w * activeMap.mapScale - Game::windowW)
+        camera.x = camera.w * activeMap.mapScale - Game::windowW;
+    if (camera.y > camera.h * activeMap.mapScale - Game::windowH)
+        camera.y = camera.h * activeMap.mapScale - Game::windowH;
+    
+    Game::camera = camera;
 }
 
 void OverworldState::render() {
