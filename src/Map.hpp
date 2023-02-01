@@ -10,8 +10,9 @@ public:
     Map(std::string tID, std::string filePath, int szX, int szY, int mScale, int tSize);
     ~Map();
     
-    void LoadMap(Manager* manager);
-    void AddTile(Manager* manager, int srcX, int srcY, int xpos, int ypos);
+    void LoadMap(Manager& manager);
+    void AddTile(Manager& manager, int srcX, int srcY, int xpos, int ypos);
+    void AddTallGrass(Manager& manager, int srcX, int srcY, int xpos, int ypos);
     
 public:
     int sizeX, sizeY;

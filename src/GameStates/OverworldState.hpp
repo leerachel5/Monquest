@@ -18,6 +18,15 @@ public:
     void update() override;
     void render() override;
 
+public:
+    enum groupLabels : std::size_t {
+        groupMap,
+        groupMapLinks,
+        groupPlayers,
+        groupColliders,
+        groupTallGrass
+    };
+
 private:
     Entity* player;
     Entity* playerPosLabel;
@@ -26,6 +35,7 @@ private:
     std::vector<Entity*>& mapLinks;
     std::vector<Entity*>& players;
     std::vector<Entity*>& colliders;
+    std::vector<Entity*>& tallGrass;
 };
 
 #endif /* OverworldState_hpp */

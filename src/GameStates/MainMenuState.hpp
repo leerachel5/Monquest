@@ -18,6 +18,11 @@ public:
     void update() override;
     void render() override;
 
+public:
+    enum groupLabels : std::size_t {
+        groupButtons
+    };
+    
 private:
     std::vector<Entity*>& buttons;
 };

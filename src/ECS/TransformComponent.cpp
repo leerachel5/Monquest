@@ -1,11 +1,12 @@
 #include "TransformComponent.hpp"
 #include "Components.hpp"
+#include "OverworldState.hpp"
 
 extern Manager manager;
 
 void TransformComponent::update() {
     Manager* manager = &entity->getManager();
-    auto& colliders(manager->getGroup(Game::groupColliders));
+    auto& colliders(manager->getGroup(OverworldState::groupColliders));
     
     for (auto& c : colliders) {
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;

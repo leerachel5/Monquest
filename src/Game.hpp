@@ -30,14 +30,6 @@ public:
     static AssetManager* assets;
     static bool isRunning;
     static int windowW, windowH;
-    enum groupLabels : std::size_t {
-        groupMap,
-        groupMapLinks,
-        groupPlayers,
-        groupColliders,
-        groupProjectiles,
-        groupButtons
-    };
     
 private:
     int cnt;

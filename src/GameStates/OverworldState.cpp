@@ -3,8 +3,8 @@
 #include <sstream>
 
 
-OverworldState::OverworldState() : GameState(), tiles{manager.getGroup(Game::groupMap)}, mapLinks{manager.getGroup(Game::groupMapLinks)},
-    players{manager.getGroup(Game::groupPlayers)}, colliders{manager.getGroup(Game::groupColliders)}
+OverworldState::OverworldState() : GameState(), tiles{manager.getGroup(groupMap)}, mapLinks{manager.getGroup(groupMapLinks)},
+    players{manager.getGroup(groupPlayers)}, colliders{manager.getGroup(groupColliders)}, tallGrass{manager.getGroup(groupTallGrass)}
 {}
 
 OverworldState::~OverworldState() {}
@@ -22,7 +22,7 @@ void OverworldState::init() {
     player = &manager.addEntity();
     playerPosLabel = &manager.addEntity();
     
-    mapManager->init(&manager, "map1", "terrain", "assets/map1.map", 25, 20, 2, 32);
+    mapManager->init(manager, "map1", "terrain", "assets/map1.map", 25, 20, 2, 32);
     mapManager->addMap("map2", "terrain", "assets/map2.map", 25, 20, 2, 32);
     mapManager->addMap("map3", "terrain", "assets/map3.map", 50, 50, 2, 32);
     
@@ -33,7 +33,7 @@ void OverworldState::init() {
     player->addComponent<SpriteComponent>("player", true);
     player->addComponent<KeyboardController>();
     player->addComponent<ColliderComponent>("player");
-    player->addGroup(Game::groupPlayers);
+    player->addGroup(groupPlayers);
     
     SDL_Color white = {255, 255, 255, 255};
     playerPosLabel->addComponent<UILabel>(10, 10, "", "Arial", white);
@@ -56,7 +56,7 @@ void OverworldState::update() {
     for (auto& l : mapLinks) {
         if (Collision::AABB(player->getComponent<ColliderComponent>().collider, l->getComponent<ColliderComponent>().collider)) {
             LinkComponent link = l->getComponent<LinkComponent>();
-            mapManager->loadMap(&manager, link.destMap);
+            mapManager->loadMap(manager, link.destMap);
             
             Map destMap = mapManager->getMap(link.destMap);
             camera.w = destMap.sizeX * destMap.tileSize;
@@ -87,8 +87,10 @@ void OverworldState::update() {
 void OverworldState::render() {
     for (auto& t : tiles)
         t->draw();
-    //    for (auto& c : colliders)
-    //        c->draw();
+    for (auto& g : tallGrass)
+        g->draw();
+//    for (auto& c : colliders)
+//        c->draw();
     for (auto& p : players)
         p->draw();
     

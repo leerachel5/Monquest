@@ -4,7 +4,7 @@
 extern StateManager states;
 
 
-MainMenuState::MainMenuState() : GameState(), buttons{manager.getGroup(Game::groupButtons)} {}
+MainMenuState::MainMenuState() : GameState(), buttons{manager.getGroup(groupButtons)} {}
 
 MainMenuState::~MainMenuState() {}
 
@@ -24,14 +24,14 @@ void MainMenuState::init() {
     mondexButton->addComponent<TransformComponent>(Game::windowW/2 - buttonW, Game::windowH/2 - buttonH, 144, 48, 2);
     mondexButton->addComponent<SpriteComponent>("start_button", false);
     mondexButton->addComponent<ButtonComponent>();
-    mondexButton->addGroup(Game::groupButtons);
+    mondexButton->addGroup(groupButtons);
 }
 void MainMenuState::handleEvents(SDL_Event& event) {
     switch(event.type){
         case SDL_MOUSEBUTTONDOWN:
             switch (event.button.button) {
                 case SDL_BUTTON_LEFT:
-                    for (auto& b : manager.getGroup(Game::groupButtons)) {
+                    for (auto& b : manager.getGroup(groupButtons)) {
                         if (b->getComponent<ButtonComponent>().isHovering) {
                             states.enterState("overworld");
                             states.exitState("main menu");

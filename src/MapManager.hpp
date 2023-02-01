@@ -11,10 +11,10 @@ public:
     MapManager();
     ~MapManager();
     
-    void init(Manager* manager, std::string mapName, std::string texID, std::string fPath, int szX, int szY, int mapSc, int tileSz);
+    void init(Manager& manager, std::string mapName, std::string texID, std::string fPath, int szX, int szY, int mapSc, int tileSz);
     
     void addMap(std::string mapName, std::string texID, std::string fPath, int szX, int szY, int mapSc, int tileSz);
-    void loadMap(Manager* manager, std::string mapName);
+    void loadMap(Manager& manager, std::string mapName);
     
     Map& getMap(std::string mapID);
 

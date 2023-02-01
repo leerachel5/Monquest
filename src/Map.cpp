@@ -1,6 +1,6 @@
 #include "Map.hpp"
-#include "Game.hpp"
 #include "ECS/Components.hpp"
+#include "OverworldState.hpp"
 #include <unordered_map>
 #include <fstream>
 #include <sstream>
@@ -23,10 +23,10 @@ Map::Map(std::string tID, std::string filePath, int szX, int szY, int mScale, in
 Map::~Map() {
 }
 
-void Map::LoadMap(Manager* manager) {
-    manager->resetGroup(Game::groupMap);
-    manager->resetGroup(Game::groupColliders);
-    manager->resetGroup(Game::groupMapLinks);
+void Map::LoadMap(Manager& manager) {
+    manager.resetGroup(OverworldState::groupMap);
+    manager.resetGroup(OverworldState::groupColliders);
+    manager.resetGroup(OverworldState::groupMapLinks);
     
     char c;
     std::fstream mapFile;
@@ -34,6 +34,8 @@ void Map::LoadMap(Manager* manager) {
     
     int srcX, srcY;
     
+    
+    // Parse terrain map
     for (int y = 0; y < sizeY; y++) {
         for (int x = 0; x < sizeX; x++) {
             mapFile.get(c);
@@ -46,21 +48,41 @@ void Map::LoadMap(Manager* manager) {
             mapFile.ignore();
         }
     }
-
-    mapFile.ignore(); // Ignore blank line between terrain map and collider map
     
+    mapFile.ignore();
+    
+    // Parse tall grass map
+    for (int y = 0; y < sizeY; y++) {
+        for (int x = 0; x < sizeX; x++) {
+            mapFile.get(c);
+            
+            if (c == '1') {
+                auto& tallGrass(manager.addEntity());
+                tallGrass.addComponent<TileComponent>("tall grass", 0, 0, x * scaledSize, y * scaledSize, tileSize, mapScale);
+                tallGrass.addGroup(OverworldState::groupTallGrass);
+            }
+            
+            mapFile.ignore();
+        }
+    }
+
+    mapFile.ignore();
+    
+    // Parse collider map
     for (int y = -1; y < sizeY + 1; y++) {
         for (int x = -1; x < sizeX + 1; x++) {
             mapFile.get(c);
             if (c == '1') {
-                auto& tcol(manager->addEntity());
+                auto& tcol(manager.addEntity());
                 tcol.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
-                tcol.addGroup(Game::groupColliders);
+                tcol.addGroup(OverworldState::groupColliders);
             }
             mapFile.ignore();
         }
     }
     
+    
+    // Parse link specifiers
     mapFile.ignore();
     
     std::unordered_map<int, Link> linkSpecifiers;
@@ -81,15 +103,16 @@ void Map::LoadMap(Manager* manager) {
         linkSpecifiers.insert({mapID, l});
     }
     
+    // Parse link map
     for (int y = -2; y < sizeY + 2; y++) {
         for (int x = -2; x < sizeX + 2; x++) {
             mapFile.get(c);
             if (c != '0' && isdigit(c)) {
                 Link linkedMap = linkSpecifiers.at(int(c) - '0');
-                auto& link(manager->addEntity());
+                auto& link(manager.addEntity());
                 link.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
                 link.addComponent<LinkComponent>(linkedMap.destMap, linkedMap.destX, linkedMap.destY);
-                link.addGroup(Game::groupMapLinks);
+                link.addGroup(OverworldState::groupMapLinks);
             }
             mapFile.ignore();
         }
@@ -97,8 +120,8 @@ void Map::LoadMap(Manager* manager) {
     mapFile.close();
 }
 
-void Map::AddTile(Manager* manager, int srcX, int srcY, int xpos, int ypos) {
-    auto& tile(manager->addEntity());
+void Map::AddTile(Manager& manager, int srcX, int srcY, int xpos, int ypos) {
+    auto& tile(manager.addEntity());
     tile.addComponent<TileComponent>(textureID, srcX, srcY, xpos, ypos, tileSize, mapScale);
-    tile.addGroup(Game::groupMap);
+    tile.addGroup(OverworldState::groupMap);
 }
