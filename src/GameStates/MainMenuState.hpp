@@ -2,7 +2,8 @@
 #define MainMenuState_hpp
 
 #include "GameState.hpp"
-#include "../Widgets/Widgets.hpp"
+#include "../GUI/Widgets/Widgets.hpp"
+#include "../GUI/Layouts/Layouts.hpp"
 
 
 class MainMenuState : public GameState {
@@ -21,7 +22,7 @@ public:
     void render() override;
     
 private:
-    std::vector<Widget*> widgets;
+    std::vector<Layout<Widget*>*> layouts;
 };
 
 #endif /* MainMenuState_hpp */

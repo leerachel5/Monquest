@@ -19,7 +19,7 @@ public:
     virtual void update() = 0;
     virtual void draw() = 0;
     
-protected:
+public:
     SDL_Rect srcRect, destRect;
 };
 

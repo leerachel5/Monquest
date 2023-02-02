@@ -1,7 +1,5 @@
 #include "MainMenuState.hpp"
-#include "../Widgets/Button.hpp"
 #include "../StateManager.hpp"
-
 
 extern StateManager states;
 
@@ -13,7 +11,7 @@ namespace {
 
     int buttonW = 50;
     int buttonH = 14;
-    int buttonSc = 6;
+    int buttonSc = 8;
     SDL_Color buttonTextColor = { 255,255,255,255 };
 }
 
@@ -40,30 +38,36 @@ void MainMenuState::init() {
     Button* creditsButton = new Button((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) * 3/4, buttonW, buttonH, buttonSc, [](){}, "Credits", "button", "Arial", buttonTextColor);
     Button* quitButton = new Button((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) * 11/12, buttonW, buttonH, buttonSc, []() { Game::isRunning = false; }, "Quit", "button", "Arial", buttonTextColor);
     
-    widgets.push_back(continueButton);
-    widgets.push_back(saveButton);
-    widgets.push_back(loadButton);
-    widgets.push_back(settingsButton);
-    widgets.push_back(creditsButton);
-    widgets.push_back(quitButton);
+    // Group button widgets with grid layout
+    GridLayout<Widget*>* menu = new GridLayout<Widget*>((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) / 12, buttonW * buttonSc, Game::windowH - Game::windowH / 10, 6, 1);
     
-    for (Widget* w : widgets)
-        w->init();
+    menu->addObject(continueButton, 0, 0);
+    menu->addObject(saveButton, 1, 0);
+    menu->addObject(loadButton, 2, 0);
+    menu->addObject(settingsButton, 3, 0);
+    menu->addObject(creditsButton, 4, 0);
+    menu->addObject(quitButton, 5, 0);
+    
+    
+    layouts.push_back(menu);
+    
+    for (Layout<Widget*>* l : layouts)
+        l->init();
 }
 
 void MainMenuState::handleEvents(SDL_Event& event) {
-    for (Widget* w : widgets)
-        w->handleEvents(event);
+    for (Layout<Widget*>* l : layouts)
+        l->handleEvents(event);
 }
 
 void MainMenuState::update() {
     SDL_SetRenderDrawColor(Game::renderer, 95, 97, 103, 0);
     
-    for (Widget* w : widgets)
-        w->update();
+    for (Layout<Widget*>* l : layouts)
+        l->update();
 }
 
 void MainMenuState::render() {
-    for (Widget* w : widgets)
-        w->draw();
+    for (Layout<Widget*>* l : layouts)
+        l->draw();
 }

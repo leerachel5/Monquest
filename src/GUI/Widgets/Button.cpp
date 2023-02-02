@@ -1,10 +1,6 @@
 #include "Button.hpp"
-#include "../AssetManager.hpp"
-#include "../Collision.hpp"
-
-
-const int TEXT_LEFT_OFFSET = 25;
-const int TEXT_TOP_OFFSET = 17;
+#include "../../AssetManager.hpp"
+#include "../../Collision.hpp"
 
 Button::Button() {}
 
@@ -55,5 +51,5 @@ void Button::draw() {
     else
         TextureManager::Draw(backgroundTex, srcRect, destRect);
     
-    FontManager::Draw(textTexture, destRect.x + TEXT_LEFT_OFFSET, destRect.y + TEXT_TOP_OFFSET, srcRect, destRect);
+    FontManager::Draw(textTexture, destRect.x + destRect.w / 10, destRect.y + destRect.h / 5, srcRect, destRect);
 }
