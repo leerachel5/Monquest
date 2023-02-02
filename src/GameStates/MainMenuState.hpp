@@ -2,6 +2,8 @@
 #define MainMenuState_hpp
 
 #include "GameState.hpp"
+#include "../Widgets/Widgets.hpp"
+
 
 class MainMenuState : public GameState {
 public:
@@ -17,14 +19,9 @@ public:
     void handleEvents(SDL_Event& event) override;
     void update() override;
     void render() override;
-
-public:
-    enum groupLabels : std::size_t {
-        groupButtons
-    };
     
 private:
-    std::vector<Entity*>& buttons;
+    std::vector<Widget*> widgets;
 };
 
 #endif /* MainMenuState_hpp */

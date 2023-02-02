@@ -3,6 +3,9 @@
 AssetManager::AssetManager() {}
 
 AssetManager::~AssetManager(){
+    for (std::pair<std::string, SDL_Texture*> p : textures) {
+        SDL_DestroyTexture(p.second);
+    }
 }
 
 void AssetManager::AddTexture(std::string id, const char *path) {
@@ -10,18 +13,13 @@ void AssetManager::AddTexture(std::string id, const char *path) {
 }
 
 SDL_Texture* AssetManager::GetTexture(std::string id) {
-    return textures[id];
+    return textures.at(id);
 }
 
 void AssetManager::AddFont(std::string id, std::string path, int fontSize) {
-    TTF_Font* f = TTF_OpenFont(path.c_str(), fontSize);
-    if (f == NULL) {
-        std::cout << "Could not load font at path \"" << path << "\"" << std::endl;
-        exit(1);
-    }
-    fonts.emplace(id, f);
+    fonts.emplace(id, FontManager::LoadFont(path.c_str(), fontSize));
 }
 
 TTF_Font* AssetManager::GetFont(std::string id) {
-    return fonts[id];
+    return fonts.at(id);;
 }

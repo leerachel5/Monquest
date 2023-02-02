@@ -47,7 +47,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     assets->AddTexture("player", "assets/player.png");
     assets->AddTexture("button", "assets/button.png");
     
-    assets->AddFont("Arial", "assets/Arial.ttf", 50);
+    assets->AddFont("Arial", "assets/Arial.ttf", 16);
     
     states.addState("overworld", new OverworldState());
     states.addState("main menu", new MainMenuState());
@@ -63,13 +63,8 @@ void Game::handleEvents() {
             case SDL_KEYDOWN:
                 switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
-                        if (states.isRunning("overworld")) {
-                            states.enterState("main menu");
-                            states.exitState("overworld");
-                        } else if (states.isRunning("main menu")) {
-                            states.enterState("overworld");
-                            states.exitState("main menu");
-                        }
+                        states.enterState("main menu");
+                        states.exitState("overworld");
                         break;
                         
                     default:

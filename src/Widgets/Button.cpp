@@ -1,23 +1,59 @@
-#include "MainMenuState.hpp"
 #include "Button.hpp"
-#include "TransformComponent.hpp"
-#include "UILabel.hpp"
-#include "MouseController.hpp"
+#include "../AssetManager.hpp"
+#include "../Collision.hpp"
 
 
-Button::Button(Manager* mngr) : manager{mngr} {}
+const int TEXT_LEFT_OFFSET = 25;
+const int TEXT_TOP_OFFSET = 17;
+
+Button::Button() {}
+
+Button::Button(int xpos, int ypos, int w, int h, int sc, void (*f) (), std::string buttonText, std::string texID, std::string fontID, SDL_Color tColor)
+: Widget(xpos, ypos, w, h, sc), func{f}, text{buttonText}, textColor{tColor} {
+    backgroundTex = Game::assets->GetTexture(texID);
+    font = Game::assets->GetFont(fontID);
+    
+    hoverSrcRect = { srcRect.x + srcRect.w , srcRect.y, srcRect.w, srcRect.h };
+}
 
 Button::~Button() {}
 
-void Button::createButton(int x, int y, int w, int h, int sc, std::string text, std::string font, SDL_Color& color) {
-    button = &manager->addEntity();
-    button->addComponent<TransformComponent>(x, y, w, h, sc);
-    button->addComponent<SpriteComponent>("button");
-    button->addComponent<UILabel>(x + w * sc / 12, y + h * sc / 5, text, font, sc * 6, color);
-    button->addComponent<MouseController>();
-    button->addGroup(MainMenuState::groupButtons);
+void Button::init() {}
+
+void Button::handleEvents(SDL_Event &event) {
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    SDL_Rect mouse = {mouseX, mouseY, 1, 1};
+    
+    if (Collision::AABB(mouse, destRect)) {
+        switch(event.type){
+            case SDL_MOUSEBUTTONDOWN:
+                switch (event.button.button) {
+                    case SDL_BUTTON_LEFT:
+                        func();
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+        isHovering = true;
+    } else {
+        isHovering = false;
+    }
 }
 
-Entity& Button::getButton() {
-    return *button;
+void Button::update() {
+    textTexture = FontManager::SetText(font, destRect.h / 2, text, textColor);
+}
+
+void Button::draw() {
+    if (isHovering)
+        TextureManager::Draw(backgroundTex, hoverSrcRect, destRect);
+    else
+        TextureManager::Draw(backgroundTex, srcRect, destRect);
+    
+    FontManager::Draw(textTexture, destRect.x + TEXT_LEFT_OFFSET, destRect.y + TEXT_TOP_OFFSET, srcRect, destRect);
 }

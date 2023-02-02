@@ -35,7 +35,6 @@ public:
     
     
     void draw() override {
-        
         SDL_RenderCopy(Game::renderer, texture, nullptr, &position);
     }
     

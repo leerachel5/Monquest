@@ -2,7 +2,6 @@
 #define GameState_hpp
 
 #include "../MapManager.hpp"
-#include "../AssetManager.hpp"
 #include "../ECS/Components.hpp"
 
 class GameState {

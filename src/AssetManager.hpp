@@ -4,8 +4,9 @@
 #include <SDL2_ttf/SDL_ttf.h>
 #include <map>
 #include <string>
-#include "TextureManager.hpp"
 #include "ECS/ECS.hpp"
+#include "TextureManager.hpp"
+#include "FontManager.hpp"
 
 class AssetManager {
 public:
