@@ -11,35 +11,41 @@
 
 class UILabel : public Component {
 public:
-    UILabel(int xpos, int ypos, std::string text, std::string font, SDL_Color& color)
-        : labelText{text}, labelFont{font}, textColor{color}
+    UILabel(int xpos, int ypos, std::string labelText, std::string textFont, int textFontSize, SDL_Color& color)
+        : text{labelText}, font{textFont}, fontSize{textFontSize}, textColor{color}
     {
         position.x = xpos;
         position.y = ypos;
         
-        SetLabelText(labelText, labelFont);
+        SetLabelText(text, font, fontSize);
     }
     ~UILabel() {
     }
     
-    void SetLabelText(std::string text, std::string font) {
-        SDL_Surface* surf = TTF_RenderText_Blended(Game::assets->GetFont(font), text.c_str(), textColor);
-        labelTexture = SDL_CreateTextureFromSurface(Game::renderer, surf);
+    void SetLabelText(std::string text, std::string textFont, int fontSize) {
+        TTF_Font* font = Game::assets->GetFont(textFont);
+        TTF_SetFontSize(font, fontSize);
+        
+        SDL_Surface* surf = TTF_RenderText_Blended(font, text.c_str(), textColor);
+        texture = SDL_CreateTextureFromSurface(Game::renderer, surf);
         SDL_FreeSurface(surf);
         
-        SDL_QueryTexture(labelTexture, nullptr, nullptr, &position.w, &position.h);
+        SDL_QueryTexture(texture, nullptr, nullptr, &position.w, &position.h);
     }
     
+    
     void draw() override {
-        SDL_RenderCopy(Game::renderer, labelTexture, nullptr, &position);
+        
+        SDL_RenderCopy(Game::renderer, texture, nullptr, &position);
     }
     
 private:
     SDL_Rect position;
-    std::string labelText;
-    std::string labelFont;
+    std::string text;
+    std::string font;
+    int fontSize;
     SDL_Color textColor;
-    SDL_Texture* labelTexture;
+    SDL_Texture* texture;
 };
 
 #endif /* UILabel_hpp */

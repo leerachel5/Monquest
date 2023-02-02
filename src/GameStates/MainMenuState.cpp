@@ -1,5 +1,6 @@
 #include "MainMenuState.hpp"
 #include "../StateManager.hpp"
+#include "../Widgets/Button.hpp"
 
 extern StateManager states;
 
@@ -18,13 +19,25 @@ void MainMenuState::exit() {
 }
 
 void MainMenuState::init() {
-    Entity* mondexButton = &manager.addEntity();
-    int buttonW = 144;
-    int buttonH = 48;
-    mondexButton->addComponent<TransformComponent>(Game::windowW/2 - buttonW, Game::windowH/2 - buttonH, 144, 48, 2);
-    mondexButton->addComponent<SpriteComponent>("start_button", false);
-    mondexButton->addComponent<ButtonComponent>();
-    mondexButton->addGroup(groupButtons);
+    // Initialize 6 buttons: Continue, Save, Load, Settings, Credits, and Quit
+    Button continueButton(&manager);
+    Button saveButton(&manager);
+    Button loadButton(&manager);
+    Button settingsButton(&manager);
+    Button creditsButton(&manager);
+    Button quitButton(&manager);
+    
+    int buttonW = 50;
+    int buttonH = 14;
+    int buttonSc = 6;
+    SDL_Color buttonTextColor = { 255,255,255,255 };
+    
+    continueButton.createButton((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) / 12, buttonW, buttonH, buttonSc, "Continue", "Arial", buttonTextColor);
+    saveButton.createButton((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) / 4, buttonW, buttonH, buttonSc, "Save", "Arial", buttonTextColor);
+    loadButton.createButton((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) * 5/12, buttonW, buttonH, buttonSc, "Load", "Arial", buttonTextColor);
+    settingsButton.createButton((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) * 7/12, buttonW, buttonH, buttonSc, "Settings", "Arial", buttonTextColor);
+    creditsButton.createButton((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) * 3/4, buttonW, buttonH, buttonSc, "Credits", "Arial", buttonTextColor);
+    quitButton.createButton((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) * 11/12, buttonW, buttonH, buttonSc, "Quit", "Arial", buttonTextColor);
 }
 void MainMenuState::handleEvents(SDL_Event& event) {
     switch(event.type){
@@ -32,7 +45,7 @@ void MainMenuState::handleEvents(SDL_Event& event) {
             switch (event.button.button) {
                 case SDL_BUTTON_LEFT:
                     for (auto& b : manager.getGroup(groupButtons)) {
-                        if (b->getComponent<ButtonComponent>().isHovering) {
+                        if (b->getComponent<MouseController>().isHovering) {
                             states.enterState("overworld");
                             states.exitState("main menu");
                         }
@@ -48,7 +61,7 @@ void MainMenuState::handleEvents(SDL_Event& event) {
     }
 }
 void MainMenuState::update() {
-    SDL_SetRenderDrawColor(Game::renderer, 0, 0, 255, 0);
+    SDL_SetRenderDrawColor(Game::renderer, 95, 97, 103, 0);
     manager.refresh();
     manager.update();
 }

@@ -1,14 +1,18 @@
-#ifndef ButtonComponent_hpp
-#define ButtonComponent_hpp
+#ifndef MouseController_hpp
+#define MouseController_hpp
 
 #include "ECS.hpp"
-#include "ColliderComponent.hpp"
 #include "../Collision.hpp"
 
-class ButtonComponent : public Component {
+
+class MouseController : public Component {
 public:
-    ButtonComponent() {}
-    ~ButtonComponent() {}
+    MouseController() {}
+    ~MouseController() {}
+    
+    void init() override {
+        isHovering = false;
+    }
     
     void update() override {
         int mouseX, mouseY;
@@ -21,10 +25,9 @@ public:
             isHovering = false;
         }
     }
-    void draw() override {}
 
 public:
-    bool isHovering = false;
+    bool isHovering;
 };
 
-#endif /* ButtonComponent_hpp */
+#endif /* MouseController_hpp */

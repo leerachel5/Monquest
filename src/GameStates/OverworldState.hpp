@@ -29,7 +29,6 @@ public:
 
 private:
     Entity* player;
-    Entity* playerPosLabel;
     
     std::vector<Entity*>& tiles;
     std::vector<Entity*>& mapLinks;

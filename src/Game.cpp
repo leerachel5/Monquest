@@ -45,9 +45,9 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     assets->AddTexture("terrain", "assets/terrain_ss.png");
     assets->AddTexture("tall grass", "assets/tall_grass.png");
     assets->AddTexture("player", "assets/player.png");
-    assets->AddTexture("start_button", "assets/start_button.png");
+    assets->AddTexture("button", "assets/button.png");
     
-    assets->AddFont("Arial", "assets/Arial.ttf", 16);
+    assets->AddFont("Arial", "assets/Arial.ttf", 50);
     
     states.addState("overworld", new OverworldState());
     states.addState("main menu", new MainMenuState());

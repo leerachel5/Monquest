@@ -20,7 +20,6 @@ void OverworldState::exit() {
 
 void OverworldState::init() {
     player = &manager.addEntity();
-    playerPosLabel = &manager.addEntity();
     
     mapManager->init(manager, "map1", "terrain", "assets/map1.map", 25, 20, 2, 32);
     mapManager->addMap("map2", "terrain", "assets/map2.map", 25, 20, 2, 32);
@@ -34,9 +33,6 @@ void OverworldState::init() {
     player->addComponent<KeyboardController>();
     player->addComponent<ColliderComponent>("player");
     player->addGroup(groupPlayers);
-    
-    SDL_Color white = {255, 255, 255, 255};
-    playerPosLabel->addComponent<UILabel>(10, 10, "", "Arial", white);
 }
 
 void OverworldState::handleEvents(SDL_Event& event) {
@@ -45,10 +41,6 @@ void OverworldState::handleEvents(SDL_Event& event) {
 
 void OverworldState::update() {
     TransformComponent playerTransform = player->getComponent<TransformComponent>();
-    
-    std::stringstream ss;
-    ss << "Player position: " << playerTransform.position << std::endl;
-    playerPosLabel->getComponent<UILabel>().SetLabelText(ss.str(), "Arial");
     
     manager.refresh();
     manager.update();
@@ -93,6 +85,4 @@ void OverworldState::render() {
 //        c->draw();
     for (auto& p : players)
         p->draw();
-    
-    playerPosLabel->draw();
 }
