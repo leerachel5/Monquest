@@ -23,7 +23,7 @@ public:
 
 private:
     SDL_Texture* battlegroundTexture;
-    std::vector<Layout<Widget*>*> layouts;
+    std::map<std::string, Layout<Widget*>*> layouts;
 };
 
 #endif /* BattleState_hpp */

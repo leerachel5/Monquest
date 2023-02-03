@@ -52,23 +52,23 @@ void MainMenuState::exit() {
 }
 
 void MainMenuState::init() {
-    layouts.push_back(createMenuLayout());
+    layouts.emplace("menu buttons", createMenuLayout());
     
-    for (Layout<Widget*>* l : layouts)
-        l->init();
+    for (auto& p : layouts)
+        p.second->init();
 }
 
 void MainMenuState::handleEvents(SDL_Event& event) {
-    for (Layout<Widget*>* l : layouts)
-        l->handleEvents(event);
+    for (auto& p : layouts)
+        p.second->handleEvents(event);
 }
 
 void MainMenuState::update() {
-    for (Layout<Widget*>* l : layouts)
-        l->update();
+    for (auto& p : layouts)
+        p.second->update();
 }
 
 void MainMenuState::render() {
-    for (Layout<Widget*>* l : layouts)
-        l->draw();
+    for (auto& p : layouts)
+        p.second->draw();
 }

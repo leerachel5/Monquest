@@ -34,25 +34,25 @@ void BattleState::exit() {
 void BattleState::init() {
     battlegroundTexture = Game::assets->GetTexture("battleground");
     
-    layouts.push_back(createIntroTextBox());
+    layouts.emplace("intro text box", createIntroTextBox());
     
-    for (Layout<Widget*>* l : layouts)
-        l->init();
+    for (auto& p : layouts)
+        p.second->init();
 }
 
 void BattleState::handleEvents(SDL_Event& event) {
-    for (Layout<Widget*>* l : layouts)
-        l->handleEvents(event);
+    for (auto& p : layouts)
+        p.second->handleEvents(event);
 }
 
 void BattleState::update() {
-    for (Layout<Widget*>* l : layouts)
-        l->update();
+    for (auto& p : layouts)
+        p.second->update();
 }
 
 void BattleState::render() {
     TextureManager::Draw(battlegroundTexture, nullptr, nullptr);
     
-    for (Layout<Widget*>* l : layouts)
-        l->draw();
+    for (auto& p : layouts)
+        p.second->draw();
 }

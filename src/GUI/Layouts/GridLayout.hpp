@@ -17,6 +17,9 @@ public:
     void addObject(T object, int row, int col);
     void removeObject(int row, int col);
     
+    // Accessor member functions
+    T& getObject(int row, int col);
+    
     // Main loop functions
     void init() override;
     void handleEvents(SDL_Event& event) override;
@@ -54,6 +57,11 @@ template <typename T>
 void GridLayout<T>::removeObject(int row, int col) {
     std::vector<T> gridRow = grid.at(row);
     gridRow.erase(gridRow.begin() + col);
+}
+
+template <typename T>
+T& GridLayout<T>::getObject(int row, int col) {
+    return grid.at(row).at(col);
 }
 
 template <typename T>

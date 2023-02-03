@@ -22,7 +22,7 @@ public:
     void render() override;
     
 private:
-    std::vector<Layout<Widget*>*> layouts;
+    std::map<std::string, Layout<Widget*>*> layouts;
 };
 
 #endif /* MainMenuState_hpp */
