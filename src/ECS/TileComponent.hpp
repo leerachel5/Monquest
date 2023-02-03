@@ -40,7 +40,7 @@ public:
     }
     
     void draw() override {
-        TextureManager::Draw(texture.get(), srcRect, destRect);
+        TextureManager::Draw(texture.get(), &srcRect, &destRect);
     }
     
 public:

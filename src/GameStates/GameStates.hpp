@@ -4,5 +4,6 @@
 #include "GameState.hpp"
 #include "OverworldState.hpp"
 #include "MainMenuState.hpp"
+#include "BattleState.hpp"
 
 #endif /* GameStates_hpp */

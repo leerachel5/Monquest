@@ -47,9 +47,9 @@ void Button::update() {
 
 void Button::draw() {
     if (isHovering)
-        TextureManager::Draw(backgroundTex, hoverSrcRect, destRect);
+        TextureManager::Draw(backgroundTex, &hoverSrcRect, &destRect);
     else
-        TextureManager::Draw(backgroundTex, srcRect, destRect);
+        TextureManager::Draw(backgroundTex, &srcRect, &destRect);
     
     FontManager::Draw(textTexture, destRect.x + destRect.w / 10, destRect.y + destRect.h / 5, srcRect, destRect);
 }

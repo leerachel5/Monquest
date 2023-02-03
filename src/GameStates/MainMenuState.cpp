@@ -61,8 +61,6 @@ void MainMenuState::handleEvents(SDL_Event& event) {
 }
 
 void MainMenuState::update() {
-    SDL_SetRenderDrawColor(Game::renderer, 95, 97, 103, 0);
-    
     for (Layout<Widget*>* l : layouts)
         l->update();
 }

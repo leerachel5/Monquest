@@ -42,15 +42,18 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         std::cout << "Error: SDL_TTF failed to initialize" << std::endl;
         exit(1);
     }
+    
     assets->AddTexture("terrain", "assets/terrain_ss.png");
     assets->AddTexture("tall grass", "assets/tall_grass.png");
     assets->AddTexture("player", "assets/player.png");
     assets->AddTexture("button", "assets/button.png");
+    assets->AddTexture("battleground", "assets/battleground.png");
     
     assets->AddFont("Arial", "assets/Arial.ttf", 16);
     
     states.addState("overworld", new OverworldState());
     states.addState("main menu", new MainMenuState());
+    states.addState("battle", new BattleState());
     states.enterState("main menu");
     states.init();
 }

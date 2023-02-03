@@ -69,7 +69,7 @@ public:
     }
 
     void draw() {
-        TextureManager::Draw(texture, srcRect, destRect);
+        TextureManager::Draw(texture, &srcRect, &destRect);
     }
     
     void Play(std::string animName) {

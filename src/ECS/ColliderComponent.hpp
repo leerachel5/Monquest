@@ -45,7 +45,7 @@ public:
     }
     
     void draw() override {
-        TextureManager::Draw(tex, srcRect, destRect);
+        TextureManager::Draw(tex, &srcRect, &destRect);
     }
 
 public:

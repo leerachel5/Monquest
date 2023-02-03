@@ -1,6 +1,14 @@
 #include "OverworldState.hpp"
 #include "../Collision.hpp"
+#include "../StateManager.hpp"
 #include <sstream>
+
+extern StateManager states;
+
+namespace {
+    const float TRIGGER_BATTLE_PERCENTAGE = 0.005;
+    int randModDivisor = 100 / TRIGGER_BATTLE_PERCENTAGE;
+}
 
 
 OverworldState::OverworldState() : GameState(), tiles{manager.getGroup(groupMap)}, mapLinks{manager.getGroup(groupMapLinks)},
@@ -58,6 +66,21 @@ void OverworldState::update() {
             player->getComponent<TransformComponent>().position.y = link.destY;
         }
     }
+    
+    // Walking in tall grass has a chance to send player to battle state
+    if (player->getComponent<TransformComponent>().velocity.x != 0 || player->getComponent<TransformComponent>().velocity.y != 0) {
+        if (std::rand() % randModDivisor == 0) {
+            for (auto& tg : manager.getGroup(groupTallGrass)) {
+                TileComponent tgTile = tg->getComponent<TileComponent>();
+                SDL_Rect tgCol = { static_cast<int>(tgTile.position.x), static_cast<int>(tgTile.position.y), tgTile.destRect.w, tgTile.destRect.h };
+                if (Collision::AABB(player->getComponent<ColliderComponent>().collider, tgCol)) {
+                    states.enterState("battle");
+                    states.exitState("overworld");
+                }
+            }
+        }
+    }
+    
     
     camera.x = player->getComponent<TransformComponent>().position.x - Game::windowW / 2;
     camera.y = player->getComponent<TransformComponent>().position.y - Game::windowH / 2;

@@ -61,7 +61,6 @@ void GridLayout<T>::init() {
     for (int r = 0; r < grid.size(); r++) {
         for (int c = 0; c < grid[0].size(); c++) {
             T obj = grid[r][c];
-            std::cout << r << "," << c << std::endl;
 
             obj->init();
             
