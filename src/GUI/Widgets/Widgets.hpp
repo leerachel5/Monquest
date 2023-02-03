@@ -3,5 +3,6 @@
 
 #include "Widget.hpp"
 #include "Button.hpp"
+#include "TextBox.hpp"
 
 #endif /* Widgets_hpp */

@@ -6,7 +6,7 @@
 extern StateManager states;
 
 namespace {
-    const float TRIGGER_BATTLE_PERCENTAGE = 0.005;
+    const float TRIGGER_BATTLE_PERCENTAGE = 0.01;
     int randModDivisor = 100 / TRIGGER_BATTLE_PERCENTAGE;
 }
 

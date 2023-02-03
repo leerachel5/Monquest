@@ -9,6 +9,7 @@ template <typename T>
 class GridLayout : public Layout<T> {
 public:
     GridLayout();
+    GridLayout(int numRows, int numColumns);
     GridLayout(int x, int y, int w, int h, int numRows, int numColumns);
     ~GridLayout() override;
     
@@ -29,6 +30,11 @@ private:
 
 template <typename T>
 GridLayout<T>::GridLayout() {}
+
+template <typename T>
+GridLayout<T>::GridLayout(int numRows, int numColumns) {
+    grid = std::vector<std::vector<T>>(numRows, std::vector<T>(numColumns));
+}
 
 template <typename T>
 GridLayout<T>::GridLayout(int x, int y, int w, int h, int numRows, int numColumns)
@@ -69,11 +75,11 @@ void GridLayout<T>::init() {
             cell.y = this->y + r * cell.h;
             
             // Map object to cell
-            obj->destRect.x = cell.x;
-            obj->destRect.y = cell.y;
+            obj->destRect->x = cell.x;
+            obj->destRect->y = cell.y;
             
-            obj->destRect.w = cell.w;
-            obj->destRect.h = cell.h;
+            obj->destRect->w = cell.w;
+            obj->destRect->h = cell.h;
         }
     }
 }

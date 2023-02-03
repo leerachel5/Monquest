@@ -2,31 +2,30 @@
 #define Button_hpp
 
 #include <string>
-#include <SDL2_ttf/SDL_ttf.h>
-#include "Widget.hpp"
+#include "TextBox.hpp"
 
 class AssetManager;
 
-class Button : public Widget {
+class Button : public TextBox {
 public:
     Button();
-    Button(int xpos, int ypos, int w, int h, int sc, void (*f) (), std::string buttonText, std::string texID, std::string fontID, SDL_Color tColor);
+    Button(int xpos, int ypos, int w, int h, int sc);
+    Button(int xpos, int ypos, int w, int h, int sc, std::string buttonText, std::string texID, std::string fontID, int fontSz, SDL_Color tColor, void (*f) ());
+    Button(int xpos, int ypos, int w, int h, int sc, std::string texID, std::string buttonText, std::string fontID, int fontSz, SDL_Color tColor, void (*f) (), bool enableHoverAnim);
     ~Button() override;
     
     // Main loop functions
-    void init() override;
     void handleEvents(SDL_Event& event) override;
-    void update() override;
     void draw() override;
     
+    // Mutator member functions
+    void setFunction(void (*f) ());
+    void toggleHoverAnimation(bool flag);
+    
 private:
-    SDL_Texture* backgroundTex;
-    SDL_Texture* textTexture;
-    std::string text;
-    TTF_Font* font;
-    SDL_Color textColor;
     void (*func) ();
     
+    bool enableHoverAnimation = false;
     SDL_Rect hoverSrcRect;
     bool isHovering = false;
 };

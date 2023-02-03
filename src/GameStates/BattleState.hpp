@@ -2,6 +2,8 @@
 #define BattleState_hpp
 
 #include "GameState.hpp"
+#include "Widgets.hpp"
+#include "Layouts.hpp"
 
 
 class BattleState : public GameState {
@@ -21,6 +23,7 @@ public:
 
 private:
     SDL_Texture* battlegroundTexture;
+    std::vector<Layout<Widget*>*> layouts;
 };
 
 #endif /* BattleState_hpp */

@@ -47,6 +47,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     assets->AddTexture("tall grass", "assets/tall_grass.png");
     assets->AddTexture("player", "assets/player.png");
     assets->AddTexture("button", "assets/button.png");
+    assets->AddTexture("dialogue box", "assets/dialogue_box.png");
     assets->AddTexture("battleground", "assets/battleground.png");
     
     assets->AddFont("Arial", "assets/Arial.ttf", 16);
