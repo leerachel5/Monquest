@@ -6,7 +6,7 @@
 
 class GameState {
 public:
-    GameState() : mapManager{new MapManager()}, isRunning{false} {}
+    GameState() : mapManager{new MapManager()} {}
     virtual ~GameState() {}
     
     // State transitions
@@ -18,9 +18,6 @@ public:
     virtual void handleEvents(SDL_Event& e) = 0;
     virtual void update() = 0;
     virtual void render() = 0;
-
-public:
-    bool isRunning;
     
 protected:
     Manager manager;

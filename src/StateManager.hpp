@@ -12,7 +12,7 @@ public:
     
     void addState(std::string stateID, GameState* state);
     void enterState(std::string stateID);
-    void exitState(std::string stateID);
+    void exitState();
     
     bool isRunning(std::string stateID);
     
@@ -21,6 +21,13 @@ public:
     void update();
     void render();
 
+public:
+    const static std::string START_STATE;
+    const static std::string DEFAULT_STATE;
+    
+    std::string activeState;
+    std::string prevState;
+    
 private:
     std::unordered_map<std::string, GameState*> states;
 };

@@ -4,9 +4,11 @@
 extern StateManager states;
 
 namespace {
-    void enterOverworldState() {
-        states.enterState("overworld");
-        states.exitState("main menu");
+    void resumePausedState() {
+        if (states.prevState != "")
+            states.enterState(states.prevState);
+        else // At start, resume start state
+            states.enterState(StateManager::START_STATE);
     }
 
     int buttonW = 50;
@@ -21,17 +23,15 @@ MainMenuState::MainMenuState() : GameState() {}
 MainMenuState::~MainMenuState() {}
 
 void MainMenuState::enter() {
-    isRunning  = true;
     Game::camera = camera;
 }
 
 void MainMenuState::exit() {
-    isRunning = false;
 }
 
 void MainMenuState::init() {
     // Initialize 6 buttons: Continue, Save, Load, Settings, Credits, and Quit
-    Button* continueButton = new Button((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) / 12, buttonW, buttonH, buttonSc, enterOverworldState, "Continue", "button", "Arial", buttonTextColor);
+    Button* continueButton = new Button((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) / 12, buttonW, buttonH, buttonSc, resumePausedState, "Continue", "button", "Arial", buttonTextColor);
     Button* saveButton = new Button((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) / 4, buttonW, buttonH, buttonSc, [](){}, "Save", "button", "Arial", buttonTextColor);
     Button* loadButton = new Button((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) * 5/12, buttonW, buttonH, buttonSc, [](){}, "Load", "button", "Arial", buttonTextColor);
     Button* settingsButton = new Button((Game::windowW - buttonW * buttonSc) / 2, (Game::windowH - buttonH * buttonSc) * 7/12, buttonW, buttonH, buttonSc, [](){}, "Settings", "button", "Arial", buttonTextColor);

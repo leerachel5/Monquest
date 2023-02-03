@@ -5,12 +5,10 @@ BattleState::BattleState() : GameState() {}
 BattleState::~BattleState() {}
 
 void BattleState::enter() {
-    isRunning  = true;
     Game::camera = camera;
 }
 
 void BattleState::exit() {
-    isRunning = false;
 }
 
 void BattleState::init() {

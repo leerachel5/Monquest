@@ -18,12 +18,10 @@ OverworldState::OverworldState() : GameState(), tiles{manager.getGroup(groupMap)
 OverworldState::~OverworldState() {}
 
 void OverworldState::enter() {
-    isRunning  = true;
     Game::camera = camera;
 }
 
 void OverworldState::exit() {
-    isRunning = false;
 }
 
 void OverworldState::init() {
@@ -75,7 +73,6 @@ void OverworldState::update() {
                 SDL_Rect tgCol = { static_cast<int>(tgTile.position.x), static_cast<int>(tgTile.position.y), tgTile.destRect.w, tgTile.destRect.h };
                 if (Collision::AABB(player->getComponent<ColliderComponent>().collider, tgCol)) {
                     states.enterState("battle");
-                    states.exitState("overworld");
                 }
             }
         }

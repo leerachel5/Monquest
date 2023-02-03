@@ -66,8 +66,7 @@ void Game::handleEvents() {
             case SDL_KEYDOWN:
                 switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
-                        states.enterState("main menu");
-                        states.exitState("overworld");
+                        states.exitState();
                         break;
                         
                     default:
