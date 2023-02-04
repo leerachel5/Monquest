@@ -43,8 +43,9 @@ void OverworldState::init() {
     player->addComponent<KeyboardController>();
     player->addComponent<ColliderComponent>("player");
     
-    std::vector<std::string> party = {"red slime"};
-    player->addComponent<PartyComponent>(party);
+    //std::string nm, int lvl, int hp, int maxHp, Gender gndr
+    player->addComponent<PartyComponent>();
+    player->getComponent<PartyComponent>().addCreature("red slime", 3, 10, 200, male);
     
     player->addGroup(groupPlayers);
 }
