@@ -26,10 +26,10 @@ public:
         groupColliders,
         groupTallGrass
     };
-
-private:
-    Entity* player;
+    static Entity* player;
+    static Entity* enemy;
     
+private:
     std::vector<Entity*>& tiles;
     std::vector<Entity*>& mapLinks;
     std::vector<Entity*>& players;

@@ -20,6 +20,7 @@ public:
     void draw() override {
         ProjectorComponent projector = entity->getComponent<ProjectorComponent>();
         
+//        std::cout << projector.destRect.x << "," << projector.destRect.y << std::endl;
         TextureManager::Draw(texture, &projector.srcRect, &projector.destRect);
     }
     

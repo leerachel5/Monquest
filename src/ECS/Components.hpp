@@ -13,6 +13,6 @@
 #include "LinkComponent.hpp"
 #include "TextComponent.hpp"
 #include "UILabelComponent.hpp"
-
+#include "PartyComponent.hpp"
 
 #endif /* Components_hpp */

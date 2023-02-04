@@ -43,6 +43,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         exit(1);
     }
 
+    assets->AddTexture("red slime", "assets/red_slime.png");
     assets->AddTexture("terrain", "assets/terrain_ss.png");
     assets->AddTexture("tall grass", "assets/tall_grass.png");
     assets->AddTexture("player", "assets/player.png");
@@ -52,9 +53,9 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
     
     assets->AddFont("Arial", "assets/Arial.ttf", 16);
     
-    states.addState("overworld", new OverworldState());
     states.addState("main menu", new MainMenuState());
     states.addState("battle", new BattleState());
+    states.addState("overworld", new OverworldState());
     states.enterState("main menu");
     states.init();
 }

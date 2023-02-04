@@ -5,8 +5,11 @@
 
 extern StateManager states;
 
+Entity* OverworldState::player;
+Entity* OverworldState::enemy;
+
 namespace {
-    const float TRIGGER_BATTLE_PERCENTAGE = 0.01;
+    const float TRIGGER_BATTLE_PERCENTAGE = 0.1;
     int randModDivisor = 100 / TRIGGER_BATTLE_PERCENTAGE;
 }
 
@@ -39,6 +42,10 @@ void OverworldState::init() {
     player->addComponent<SpriteComponent>();
     player->addComponent<KeyboardController>();
     player->addComponent<ColliderComponent>("player");
+    
+    std::vector<std::string> party = {"red slime"};
+    player->addComponent<PartyComponent>(party);
+    
     player->addGroup(groupPlayers);
 }
 
@@ -66,20 +73,6 @@ void OverworldState::update() {
         }
     }
     
-    // Walking in tall grass has a chance to send player to battle state
-    if (player->getComponent<TransformComponent>().velocity.x != 0 || player->getComponent<TransformComponent>().velocity.y != 0) {
-        if (std::rand() % randModDivisor == 0) {
-            for (auto& tg : manager.getGroup(groupTallGrass)) {
-                TileComponent tgTile = tg->getComponent<TileComponent>();
-                SDL_Rect tgCol = { static_cast<int>(tgTile.position.x), static_cast<int>(tgTile.position.y), tgTile.destRect.w, tgTile.destRect.h };
-                if (Collision::AABB(player->getComponent<ColliderComponent>().collider, tgCol)) {
-                    states.enterState("battle");
-                }
-            }
-        }
-    }
-    
-    
     camera.x = player->getComponent<TransformComponent>().position.x - Game::windowW / 2;
     camera.y = player->getComponent<TransformComponent>().position.y - Game::windowH / 2;
     
@@ -95,6 +88,22 @@ void OverworldState::update() {
         camera.y = camera.h * activeMap.mapScale - Game::windowH;
     
     Game::camera = camera;
+    
+    // Walking in tall grass has a chance to send player to battle state
+    if (player->getComponent<TransformComponent>().velocity.x != 0 || player->getComponent<TransformComponent>().velocity.y != 0) {
+        if (std::rand() % randModDivisor == 0) {
+            for (auto& tg : manager.getGroup(groupTallGrass)) {
+                TileComponent tgTile = tg->getComponent<TileComponent>();
+                SDL_Rect tgCol = { static_cast<int>(tgTile.position.x), static_cast<int>(tgTile.position.y), tgTile.destRect.w, tgTile.destRect.h };
+                if (Collision::AABB(player->getComponent<ColliderComponent>().collider, tgCol)) {
+                    OverworldState::player = player;
+                    OverworldState::enemy = player;
+                    states.enterState("battle");
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void OverworldState::render() {
