@@ -21,6 +21,11 @@ public:
         SDL_Rect mouse = {mouseX, mouseY, 1, 1};
         
         isHovering = Collision::AABB(mouse, projector->destRect);
+        
+        if (isHovering)
+            projector->PlayAnimation("hover");
+        else
+            projector->PlayAnimation("default");
     }
     
     // Mutator member functions

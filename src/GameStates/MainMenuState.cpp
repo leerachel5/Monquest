@@ -55,9 +55,8 @@ void MainMenuState::handleEvents(SDL_Event& event) {
                 case SDL_BUTTON_LEFT:
                     for (auto& b : buttons) {
                         ButtonComponent button = b->getComponent<ButtonComponent>();
-                        if (button.isHovering) {
+                        if (button.isHovering)
                             button.func();
-                        }
                     }
                     break;
                 default:

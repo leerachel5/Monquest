@@ -27,5 +27,11 @@ Entity* WidgetManager::CreateButton(Manager* manager, int xoffset, int yoffset, 
     widget->addComponent<UILabelComponent>(xoffset, yoffset, text, fontID, textSize, textColor);
     widget->addComponent<ButtonComponent>(f);
     
+    ProjectorComponent* projector = &widget->getComponent<ProjectorComponent>();
+    projector->AddAnimation("default", 0, 1, 1);
+    projector->AddAnimation("hover", 1, 1, 1);
+    projector->PlayAnimation("default");
+    projector->ToggleAnimation(true);
+    
     return widget;
 }
