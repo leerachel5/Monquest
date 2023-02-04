@@ -11,6 +11,7 @@
 #include "ColliderComponent.hpp"
 #include "TileComponent.hpp"
 #include "LinkComponent.hpp"
+#include "TextComponent.hpp"
 #include "UILabelComponent.hpp"
 
 

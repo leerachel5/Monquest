@@ -15,7 +15,8 @@ Entity* WidgetManager::CreateTextBox(Manager* manager, int xoffset, int yoffset,
     Entity* widget = CreateWidget(manager, x, y, srcw, srch, sc);
     
     widget->addComponent<TextureComponent>(texID);
-    widget->addComponent<UILabelComponent>(xoffset, yoffset, text, fontID, textSize, textColor);
+    widget->addComponent<TextComponent>(text);
+    widget->addComponent<UILabelComponent>(xoffset, yoffset, fontID, textSize, textColor);
     
     return widget;
 }
@@ -24,7 +25,8 @@ Entity* WidgetManager::CreateButton(Manager* manager, int xoffset, int yoffset, 
     Entity* widget = CreateWidget(manager, x, y, srcw, srch, sc);
     
     widget->addComponent<TextureComponent>(texID);
-    widget->addComponent<UILabelComponent>(xoffset, yoffset, text, fontID, textSize, textColor);
+    widget->addComponent<TextComponent>(text);
+    widget->addComponent<UILabelComponent>(xoffset, yoffset, fontID, textSize, textColor);
     widget->addComponent<ButtonComponent>(f);
     
     ProjectorComponent* projector = &widget->getComponent<ProjectorComponent>();
@@ -32,6 +34,18 @@ Entity* WidgetManager::CreateButton(Manager* manager, int xoffset, int yoffset, 
     projector->AddAnimation("hover", 1, 1, 1);
     projector->PlayAnimation("default");
     projector->ToggleAnimation(true);
+    
+    return widget;
+}
+
+Entity* WidgetManager::CreateDialogueBox(Manager* manager, int xoffset, int yoffset, float x, float y, int srcw, int srch, int sc, std::string texID, std::vector<std::string> text, std::string fontID, int textSize, SDL_Color textColor) {
+    Entity* widget = CreateButton(manager, xoffset, yoffset, x, y, srcw, srch, sc, texID, text.front(), fontID, textSize, textColor, [](){});
+    
+    text.erase(text.begin());
+    
+    TextComponent* textComponent = &widget->getComponent<TextComponent>();
+    for (std::string t : text)
+        textComponent->addText(t);
     
     return widget;
 }

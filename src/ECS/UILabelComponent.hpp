@@ -4,7 +4,7 @@
 #include "ECS.hpp"
 #include "../AssetManager.hpp"
 #include "../Game.hpp"
-#include "TransformComponent.hpp"
+#include "TextComponent.hpp"
 #include "ProjectorComponent.hpp"
 #include <SDL2_ttf/SDL_ttf.h>
 #include <string>
@@ -12,17 +12,12 @@
 class UILabelComponent : public Component {
 public:
     UILabelComponent() = default;
-    UILabelComponent(int xoffset, int yoffset, std::string labelText, std::string textFontID, int textFontSize, SDL_Color& tColor) {
+    UILabelComponent(int xoffset, int yoffset, std::string textFontID, int textFontSize, SDL_Color& tColor) {
         SetLabelPosition(xoffset, yoffset);
-        SetLabelText(labelText);
         SetLabelFont(textFontID, textFontSize, tColor);
     }
     
     ~UILabelComponent() {
-    }
-    
-    void SetLabelText(std::string labelText) {
-        text = labelText;
     }
     
     void SetLabelFont(std::string fontID, int fontSz, SDL_Color tColor) {
@@ -38,10 +33,11 @@ public:
     
     void init() override {
         projector = &entity->getComponent<ProjectorComponent>();
+        text = &entity->getComponent<TextComponent>();
     }
     
     void update() override {
-        textTexture = FontManager::SetText(font, fontSize, text, textColor);
+        textTexture = FontManager::SetText(font, fontSize, text->getText(), textColor);
         
         position.x = projector->destRect.x + xOffset;
         position.y = projector->destRect.y + yOffset;
@@ -59,7 +55,7 @@ private:
     int fontSize;
     SDL_Color textColor;
     
-    std::string text;
+    TextComponent* text;
     SDL_Texture* textTexture;
     
     ProjectorComponent* projector;

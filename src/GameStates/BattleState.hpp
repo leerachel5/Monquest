@@ -23,9 +23,9 @@ private:
     SDL_Texture* battlegroundTexture;
     
     enum groupLabels : std::size_t {
-        groupWidgets
+        groupDialogue
     };
-    std::vector<Entity*>& widgets;
+    std::vector<Entity*>& dialogue;
 };
 
 #endif /* BattleState_hpp */
