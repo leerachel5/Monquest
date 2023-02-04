@@ -11,6 +11,12 @@ Entity* WidgetManager::CreateWidget(Manager* manager, float x, float y, int w, i
     return widget;
 }
 
+Entity* WidgetManager::CreateImageBox(Manager* manager, float x, float y, int w, int h, int sc, std::string texID) {
+    Entity* widget = CreateWidget(manager, x, y, w, h, sc);
+    widget->addComponent<TextureComponent>(texID);
+    return widget;
+}
+
 Entity* WidgetManager::CreateTextBox(Manager* manager, int xoffset, int yoffset, float x, float y, int srcw, int srch, int sc, std::string texID, std::string text, std::string fontID, int textSize, SDL_Color textColor) {
     Entity* widget = CreateWidget(manager, x, y, srcw, srch, sc);
     

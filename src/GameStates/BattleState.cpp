@@ -3,7 +3,7 @@
 #include "OverworldState.hpp"
 
 
-BattleState::BattleState() : GameState(), dialogue{manager.getGroup(groupDialogue)}, party{manager.getGroup(groupParty)}, enemyParty{manager.getGroup(groupEnemyParty)}, player{nullptr}, enemy{nullptr} {}
+BattleState::BattleState() : GameState(), introDialogue{manager.getGroup(groupIntroDialogue)}, battleWidgets{manager.getGroup(groupBattleWidgets)}, party{manager.getGroup(groupParty)}, enemyParty{manager.getGroup(groupEnemyParty)}, player{nullptr}, enemy{nullptr} {}
 
 BattleState::~BattleState() {}
 
@@ -14,11 +14,11 @@ void BattleState::enter() {
         player = OverworldState::player;
         enemy = OverworldState::enemy;
         
-        for (std::string name : player->getComponent<PartyComponent>().party) {
+        for (Creature c : player->getComponent<PartyComponent>().creatures) {
             Entity* companion(&manager.addEntity());
             companion->addComponent<TransformComponent>(0, 0, 16, 12, 30);
             companion->addComponent<ProjectorComponent>(true);
-            companion->addComponent<TextureComponent>(name);
+            companion->addComponent<TextureComponent>(c.name);
             
             ProjectorComponent* projector = &companion->getComponent<ProjectorComponent>();
             projector->AddAnimation("back", 0, 1, 1);
@@ -30,11 +30,11 @@ void BattleState::enter() {
             companion->addGroup(groupParty);
         }
         
-        for (std::string name : enemy->getComponent<PartyComponent>().party) {
+        for (Creature c : enemy->getComponent<PartyComponent>().creatures) {
             Entity* monster(&manager.addEntity());
             monster->addComponent<TransformComponent>(0, 0, 16, 12, 20);
             monster->addComponent<ProjectorComponent>(true);
-            monster->addComponent<TextureComponent>(name);
+            monster->addComponent<TextureComponent>(c.name);
             
             ProjectorComponent* projector = &monster->getComponent<ProjectorComponent>();
             projector->AddAnimation("back", 0, 1, 1);
@@ -63,7 +63,7 @@ void BattleState::init() {
     dialogueBox->getComponent<ProjectorComponent>().setYToPercentOfWindow(70);
     dialogueBox->getComponent<ProjectorComponent>().setWidthToPercentOfWindow(100);
     dialogueBox->getComponent<ProjectorComponent>().setHeightToPercentOfWindow(30);
-    dialogueBox->addGroup(groupDialogue);
+    dialogueBox->addGroup(groupIntroDialogue);
 }
 
 void BattleState::handleEvents(SDL_Event& event) {
@@ -71,11 +71,26 @@ void BattleState::handleEvents(SDL_Event& event) {
         case SDL_MOUSEBUTTONDOWN:
             switch (event.button.button) {
                 case SDL_BUTTON_LEFT:
-                    for (auto& d : dialogue) {
+                    for (auto& d : introDialogue) {
                         if (d->getComponent<ButtonComponent>().isHovering) {
                             TextComponent* text = &d->getComponent<TextComponent>();
-                            if (text->isEmpty() || text->numberOfTexts() == 1)
+                            if (text->isEmpty() || text->numberOfTexts() == 1) {
                                 d->destroy();
+                                
+                                Entity* enemyStatusBar = WidgetManager::CreateImageBox(&manager, 0, 0, 100, 32, 4, "status bar");
+                                enemyStatusBar->getComponent<ProjectorComponent>().setWidthToPercentOfWindow(45);
+                                enemyStatusBar->getComponent<ProjectorComponent>().setHeightToPercentOfWindow(20);
+                                enemyStatusBar->addGroup(groupBattleWidgets);
+                                
+                                Entity* playerStatusBar = WidgetManager::CreateImageBox(&manager, 0, 0, 100, 32, 4, "status bar");
+                                playerStatusBar->getComponent<ProjectorComponent>().setXToPercentOfWindow(55);
+                                playerStatusBar->getComponent<ProjectorComponent>().setYToPercentOfWindow(80);
+                                playerStatusBar->getComponent<ProjectorComponent>().setWidthToPercentOfWindow(45);
+                                playerStatusBar->getComponent<ProjectorComponent>().setHeightToPercentOfWindow(20);
+                                playerStatusBar->addGroup(groupBattleWidgets);
+
+                                break;
+                            }
                             else {
                                 text->removeCurrentText();
                             }
@@ -103,6 +118,8 @@ void BattleState::render() {
         e->draw();
     for (auto& p : party)
         p->draw();
-    for (auto& d : dialogue)
+    for(auto& bw : battleWidgets)
+        bw->draw();
+    for (auto& d : introDialogue)
         d->draw();
 }
