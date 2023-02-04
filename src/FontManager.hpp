@@ -9,7 +9,7 @@ class FontManager {
 public:
     static TTF_Font *LoadFont(const char *path, int fontSize);
     static SDL_Texture *SetText(TTF_Font* font, int fontSize, std::string text, SDL_Color textColor);
-    static void Draw(SDL_Texture* texture, int x, int y, SDL_Rect& src, SDL_Rect& dest);
+    static void Draw(SDL_Texture* texture, int x, int y);
 };
 
 #endif /* FontManager_hpp */

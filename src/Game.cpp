@@ -42,7 +42,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height) {
         std::cout << "Error: SDL_TTF failed to initialize" << std::endl;
         exit(1);
     }
-    
+
     assets->AddTexture("terrain", "assets/terrain_ss.png");
     assets->AddTexture("tall grass", "assets/tall_grass.png");
     assets->AddTexture("player", "assets/player.png");

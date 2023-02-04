@@ -3,12 +3,15 @@
 
 #include "ECS.hpp"
 #include "TransformComponent.hpp"
+#include "ProjectorComponent.hpp"
+#include "TextureComponent.hpp"
 #include "SpriteComponent.hpp"
 #include "KeyboardController.hpp"
+#include "ButtonComponent.hpp"
 #include "ColliderComponent.hpp"
 #include "TileComponent.hpp"
 #include "LinkComponent.hpp"
-#include "UILabel.hpp"
+#include "UILabelComponent.hpp"
 
 
 #endif /* Components_hpp */

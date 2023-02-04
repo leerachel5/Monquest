@@ -22,7 +22,7 @@ SDL_Texture *FontManager::SetText(TTF_Font* font, int fontSize, std::string text
     return texture;
 }
 
-void FontManager::Draw(SDL_Texture* texture, int x, int y, SDL_Rect& src, SDL_Rect& dest) {
+void FontManager::Draw(SDL_Texture* texture, int x, int y) {
     SDL_Rect position = { x, y, 0, 0 };
     SDL_QueryTexture(texture, nullptr, nullptr, &position.w, &position.h);
     

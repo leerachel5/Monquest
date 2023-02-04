@@ -25,8 +25,6 @@ void OverworldState::exit() {
 }
 
 void OverworldState::init() {
-    player = &manager.addEntity();
-    
     mapManager->init(manager, "map1", "terrain", "assets/map1.map", 25, 20, 2, 32);
     mapManager->addMap("map2", "terrain", "assets/map2.map", 25, 20, 2, 32);
     mapManager->addMap("map3", "terrain", "assets/map3.map", 50, 50, 2, 32);
@@ -34,8 +32,11 @@ void OverworldState::init() {
     Map initialMap =  mapManager->getMap(mapManager->activeMap);
     camera = {0, 0, initialMap.sizeX * initialMap.tileSize, initialMap.sizeY * initialMap.tileSize};
     
+    player = &manager.addEntity();
     player->addComponent<TransformComponent>(1200.0f, 500.0f, 17, 23, 4);
-    player->addComponent<SpriteComponent>("player", true);
+    player->addComponent<ProjectorComponent>(true);
+    player->addComponent<TextureComponent>("player");
+    player->addComponent<SpriteComponent>();
     player->addComponent<KeyboardController>();
     player->addComponent<ColliderComponent>("player");
     player->addGroup(groupPlayers);

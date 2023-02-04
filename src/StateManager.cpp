@@ -15,12 +15,14 @@ void StateManager::addState(std::string stateID, GameState* state) {
 void StateManager::enterState(std::string stateID) {
     prevState = activeState;
     activeState = stateID;
+    states.at(activeState)->enter();
 }
 
 void StateManager::exitState() {
     if (activeState != StateManager::DEFAULT_STATE) {
         prevState = activeState;
         activeState = StateManager::DEFAULT_STATE;
+        states.at(activeState)->enter();
     }
 }
 

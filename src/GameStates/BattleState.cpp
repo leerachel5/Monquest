@@ -1,26 +1,8 @@
 #include "BattleState.hpp"
+#include "../WidgetManager.hpp"
 
-namespace {
-    int introTextBoxW = 50;
-    int introTextBoxH = 14;
-    int introBoxTextSize = 32;
-    SDL_Color introBoxTextColor = { 0,0,0,0 };
 
-    GridLayout<Widget*>* createIntroTextBox() {
-        Button* introTextBox = new Button(0, 0, introTextBoxW, introTextBoxH, 0, "dialogue box", "Player has encountered a wild monster.", "Arial", introBoxTextSize, introBoxTextColor, []() {}, true);
-        
-        GridLayout<Widget*>* introTextGrid = new GridLayout<Widget*>(1, 1);
-        introTextGrid->setYToPercentOfWindow(70);
-        introTextGrid->setWidthToPercentOfWindow(100);
-        introTextGrid->setHeightToPercentOfWindow(30);
-        
-        introTextGrid->addObject(introTextBox, 0, 0);
-        
-        return introTextGrid;
-    }
-}
-
-BattleState::BattleState() : GameState() {}
+BattleState::BattleState() : GameState(), widgets{manager.getGroup(groupWidgets)} {}
 
 BattleState::~BattleState() {}
 
@@ -34,25 +16,28 @@ void BattleState::exit() {
 void BattleState::init() {
     battlegroundTexture = Game::assets->GetTexture("battleground");
     
-    layouts.emplace("intro text box", createIntroTextBox());
+    SDL_Color textColor = { 0, 0, 0, 0 };
     
-    for (auto& p : layouts)
-        p.second->init();
+    Entity* textBox = WidgetManager::CreateTextBox(&manager, 100, 55, 0, 0, 50, 14, 2, "dialogue box", "Player has encountered a wild monster.", "Arial", 32, textColor);
+    textBox->getComponent<ProjectorComponent>().setXToPercentOfWindow(0);
+    textBox->getComponent<ProjectorComponent>().setYToPercentOfWindow(70);
+    textBox->getComponent<ProjectorComponent>().setWidthToPercentOfWindow(100);
+    textBox->getComponent<ProjectorComponent>().setHeightToPercentOfWindow(30);
+    
+    textBox->addGroup(groupWidgets);
 }
 
 void BattleState::handleEvents(SDL_Event& event) {
-    for (auto& p : layouts)
-        p.second->handleEvents(event);
 }
 
 void BattleState::update() {
-    for (auto& p : layouts)
-        p.second->update();
+    manager.refresh();
+    manager.update();
 }
 
 void BattleState::render() {
     TextureManager::Draw(battlegroundTexture, nullptr, nullptr);
     
-    for (auto& p : layouts)
-        p.second->draw();
+    for (auto& w : widgets)
+        w->draw();
 }
