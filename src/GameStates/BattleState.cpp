@@ -2,6 +2,7 @@
 #include "../WidgetManager.hpp"
 #include "OverworldState.hpp"
 
+extern CreatureManager* creatures;
 
 BattleState::BattleState() : GameState(), introDialogue{manager.getGroup(groupIntroDialogue)}, battleWidgets{manager.getGroup(groupBattleWidgets)}, party{manager.getGroup(groupParty)}, enemyParty{manager.getGroup(groupEnemyParty)}, player{nullptr}, enemy{nullptr} {}
 
@@ -14,11 +15,12 @@ void BattleState::enter() {
         player = OverworldState::player;
         enemy = OverworldState::enemy;
         
-        for (Creature c : player->getComponent<PartyComponent>().creatures) {
+        for (CreatureID id : player->getComponent<PartyComponent>().party) {
+            Creature* c = creatures->getCreature(player->getComponent<SpriteComponent>().spriteName, id);
             Entity* companion(&manager.addEntity());
             companion->addComponent<TransformComponent>(0, 0, 16, 12, 30);
             companion->addComponent<ProjectorComponent>(true);
-            companion->addComponent<TextureComponent>(c.name);
+            companion->addComponent<TextureComponent>(c->name);
             
             ProjectorComponent* projector = &companion->getComponent<ProjectorComponent>();
             projector->AddAnimation("back", 0, 1, 1);
@@ -30,11 +32,12 @@ void BattleState::enter() {
             companion->addGroup(groupParty);
         }
         
-        for (Creature c : enemy->getComponent<PartyComponent>().creatures) {
+        for (CreatureID id : player->getComponent<PartyComponent>().party) {
+            Creature* c = creatures->getCreature(player->getComponent<SpriteComponent>().spriteName, id);
             Entity* monster(&manager.addEntity());
             monster->addComponent<TransformComponent>(0, 0, 16, 12, 20);
             monster->addComponent<ProjectorComponent>(true);
-            monster->addComponent<TextureComponent>(c.name);
+            monster->addComponent<TextureComponent>(c->name);
             
             ProjectorComponent* projector = &monster->getComponent<ProjectorComponent>();
             projector->AddAnimation("back", 0, 1, 1);

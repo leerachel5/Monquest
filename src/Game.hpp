@@ -3,12 +3,11 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
-#include <iostream>
 #include <vector>
-#include "AssetManager.hpp"
 
 class AssetManager;
 class ColliderComponent;
+class CreatureManager;
 
 class Game {
 public:
@@ -28,6 +27,7 @@ public:
     static SDL_Event event;
     static SDL_Rect camera;
     static AssetManager* assets;
+    static CreatureManager* creatures;
     static bool isRunning;
     static int windowW, windowH;
     

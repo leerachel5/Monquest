@@ -39,7 +39,7 @@ void OverworldState::init() {
     player->addComponent<TransformComponent>(1200.0f, 500.0f, 17, 23, 4);
     player->addComponent<ProjectorComponent>(true);
     player->addComponent<TextureComponent>("player");
-    player->addComponent<SpriteComponent>();
+    player->addComponent<SpriteComponent>("player");
     player->addComponent<KeyboardController>();
     player->addComponent<ColliderComponent>("player");
     

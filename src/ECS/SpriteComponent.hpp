@@ -4,11 +4,13 @@
 #include "ECS.hpp"
 #include "ProjectorComponent.hpp"
 #include "TextureManager.hpp"
+#include "TextureComponent.hpp"
 
 class SpriteComponent : public Component {
 public:
     SpriteComponent() = default;
-    SpriteComponent(std::string id) : texID{id} {}
+    SpriteComponent(std::string name) : spriteName{name} {}
+    SpriteComponent(std::string name, std::string id) : spriteName{name}, texID{id} {}
     
     ~SpriteComponent() {}
 
@@ -35,6 +37,7 @@ public:
     void update() override {}
 
 public:
+    std::string spriteName;
     std::string facingDirection;
     std::string texID;
 

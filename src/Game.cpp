@@ -1,8 +1,10 @@
 #include "Game.hpp"
 #include "StateManager.hpp"
+#include "AssetManager.hpp"
 
 Manager manager;
 StateManager states;
+CreatureManager* creatures = new CreatureManager();
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;

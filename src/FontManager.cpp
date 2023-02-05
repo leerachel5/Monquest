@@ -1,4 +1,4 @@
-//#include "FontManager.hpp"
+#include "FontManager.hpp"
 #include "Game.hpp"
 #include <iostream>
 

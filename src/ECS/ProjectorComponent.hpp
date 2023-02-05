@@ -3,6 +3,8 @@
 
 #include "ECS.hpp"
 #include "Animation.hpp"
+#include "TransformComponent.hpp"
+#include <unordered_map>
 
 class ProjectorComponent : public Component {
 public:
@@ -80,7 +82,7 @@ private:
     int animIndex = 0;
     int frames = 0;
     int speed = 0;
-    std::map<std::string, Animation> animations;
+    std::unordered_map<std::string, Animation> animations;
     
     // When true, projection is independent of the entity's TransformComponent
     bool fixedX = false;

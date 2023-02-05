@@ -2,6 +2,7 @@
 #define TransformComponent_hpp
 
 #include "Game.hpp"
+#include "ECS.hpp"
 #include "../Vector2D.hpp"
 
 
