@@ -1,8 +1,11 @@
 #ifndef WidgetManager_hpp
 #define WidgetManager_hpp
 
-#include "ECS/ECS.hpp"
-#include <SDL2/SDL.h>
+#include <string>
+
+class SDL_Color;
+class Manager;
+class Entity;
 
 
 class WidgetManager {

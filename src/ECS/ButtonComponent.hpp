@@ -2,36 +2,21 @@
 #define ButtonComponent_hpp
 
 #include "ECS.hpp"
-#include "../Collision.hpp"
+
+class ProjectorComponent;
 
 
 class ButtonComponent : public Component {
 public:
-    ButtonComponent() : func{[](){}} {}
-    ButtonComponent(void (*f)()) : func{f} {}
-    ~ButtonComponent() {}
+    ButtonComponent();
+    ButtonComponent(void (*f)());
+    ~ButtonComponent();
     
-    void init() override {
-        projector = &entity->getComponent<ProjectorComponent>();
-    }
-    
-    void update() override {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-        SDL_Rect mouse = {mouseX, mouseY, 1, 1};
-        
-        isHovering = Collision::AABB(mouse, projector->destRect);
-        
-        if (isHovering)
-            projector->PlayAnimation("hover");
-        else
-            projector->PlayAnimation("default");
-    }
+    void init() override;
+    void update() override;
     
     // Mutator member functions
-    void setFunc(void (*f)()) {
-        func = f;
-    }
+    void setFunc(void (*f)());
     
 public:
     bool isHovering = false;

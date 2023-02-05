@@ -1,9 +1,13 @@
 #include "Map.hpp"
-#include "ECS/Components.hpp"
-#include "OverworldState.hpp"
-#include <unordered_map>
+#include "ECS.hpp"
+#include "GameStates/OverworldState.hpp"
+#include "ECS/ColliderComponent.hpp"
+#include "ECS/LinkComponent.hpp"
+#include "ECS/TileComponent.hpp"
 #include <fstream>
 #include <sstream>
+#include <unordered_map>
+
 
 namespace {
     struct Link {
@@ -81,7 +85,6 @@ void Map::LoadMap(Manager& manager) {
             mapFile.ignore();
         }
     }
-    
     
     // Parse link specifiers
     mapFile.ignore();

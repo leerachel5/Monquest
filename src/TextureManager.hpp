@@ -1,7 +1,8 @@
 #ifndef TextureManager_hpp
 #define TextureManager_hpp
 
-#include "Game.hpp"
+class SDL_Texture;
+class SDL_Rect;
 
 class TextureManager {
 public:

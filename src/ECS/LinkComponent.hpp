@@ -3,9 +3,10 @@
 
 #include "ECS.hpp"
 
+
 class LinkComponent : public Component {
 public:
-    LinkComponent(std::string dMap, int dX, int dY) : destMap{dMap}, destX{dX}, destY{dY} {}
+    LinkComponent(std::string dMap, int dX, int dY);
 
 public:
     std::string destMap;

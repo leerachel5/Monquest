@@ -1,8 +1,9 @@
 #ifndef Map_hpp
 #define Map_hpp
 
-#include "ECS/ECS.hpp"
 #include <string>
+
+class Manager;
 
 class Map {
 public:

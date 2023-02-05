@@ -3,12 +3,12 @@
 
 #include <string>
 
-enum genderTypes : std::size_t {
+using Gender = std::size_t;
+
+enum genderTypes : Gender {
     male,
     female
 };
-
-using Gender = std::size_t;
 
 struct Creature {
     std::string name;

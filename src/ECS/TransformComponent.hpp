@@ -1,9 +1,9 @@
 #ifndef TransformComponent_hpp
 #define TransformComponent_hpp
 
-#include "Game.hpp"
 #include "ECS.hpp"
 #include "../Vector2D.hpp"
+#include <SDL2/SDL.h>
 
 
 class TransformComponent : public Component {

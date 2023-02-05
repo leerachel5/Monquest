@@ -1,4 +1,6 @@
 #include "CreatureManager.hpp"
+#include "ECS/Creature.hpp"
+
 
 CreatureManager::CreatureManager() {}
 

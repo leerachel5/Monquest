@@ -1,5 +1,6 @@
 #include "WidgetManager.hpp"
-#include "Components.hpp"
+#include "ECS/Components.hpp"
+#include <SDL2/SDL.h>
 
 
 Entity* WidgetManager::CreateWidget(Manager* manager, float x, float y, int w, int h, int sc) {

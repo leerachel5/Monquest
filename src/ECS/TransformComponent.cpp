@@ -2,6 +2,7 @@
 #include "Components.hpp"
 #include "OverworldState.hpp"
 #include "StateManager.hpp"
+#include "Game.hpp"
 
 extern StateManager states;
 

@@ -1,7 +1,8 @@
 #ifndef Collision_hpp
 #define Collision_hpp
 
-#include <SDL2/SDL.h>
+class SDL_Rect;
+
 
 class ColliderComponent;
 

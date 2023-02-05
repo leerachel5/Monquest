@@ -1,28 +1,21 @@
 #ifndef TextureComponent_hpp
 #define TextureComponent_hpp
 
-#include "../AssetManager.hpp"
-#include "ProjectorComponent.hpp"
+#include "ECS.hpp"
+#include <string>
+
+class SDL_Texture;
 
 
 class TextureComponent : public Component {
 public:
-    TextureComponent() {}
-    TextureComponent(std::string id) {
-        setTex(id);
-    }
-    ~TextureComponent() {}
+    TextureComponent();
+    TextureComponent(std::string id);
+    ~TextureComponent();
     
-    void setTex(std::string id) {
-        texture = Game::assets->GetTexture(id);
-    }
+    void draw() override;
     
-    void draw() override {
-        ProjectorComponent projector = entity->getComponent<ProjectorComponent>();
-        
-//        std::cout << projector.destRect.x << "," << projector.destRect.y << std::endl;
-        TextureManager::Draw(texture, &projector.srcRect, &projector.destRect);
-    }
+    void setTex(std::string id);
     
 private:
     SDL_Texture* texture;

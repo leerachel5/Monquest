@@ -3,8 +3,10 @@
 
 #include <string>
 #include <unordered_map>
-#include "Map.hpp"
-#include "ECS/ECS.hpp"
+
+class Manager;
+class Map;
+
 
 class MapManager {
 public:

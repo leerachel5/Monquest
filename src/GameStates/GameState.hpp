@@ -1,12 +1,16 @@
 #ifndef GameState_hpp
 #define GameState_hpp
 
-#include "../MapManager.hpp"
-#include "../ECS/Components.hpp"
+#include "../ECS/ECS.hpp"
+#include <SDL2/SDL.h>
+
+class Manager;
+class MapManager;
+
 
 class GameState {
 public:
-    GameState() : mapManager{new MapManager()} {}
+    GameState();
     virtual ~GameState() {}
     
     // State transitions
@@ -23,7 +27,7 @@ protected:
     Manager manager;
     MapManager* mapManager;
     
-    SDL_Rect camera = {0, 0, Game::windowW, Game::windowH};
+    SDL_Rect camera;
 };
 
 #endif /* GameState_hpp */

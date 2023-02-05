@@ -1,8 +1,11 @@
 #ifndef StateManager_hpp
 #define StateManager_hpp
 
-#include "GameStates/GameStates.hpp"
+#include <string>
 #include <unordered_map>
+#include <SDL2/SDL.h>
+
+class GameState;
 
 
 class StateManager {

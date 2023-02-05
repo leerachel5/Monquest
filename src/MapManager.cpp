@@ -1,4 +1,5 @@
 #include "MapManager.hpp"
+#include "Map.hpp"
 
 
 MapManager::MapManager() : activeMap{""} {}

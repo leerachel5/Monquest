@@ -1,6 +1,11 @@
 #include "Game.hpp"
 #include "StateManager.hpp"
+#include "CreatureManager.hpp"
 #include "AssetManager.hpp"
+#include "GameStates/GameStates.hpp"
+#include <SDL2_ttf/SDL_ttf.h>
+#include <SDL2_image/SDL_image.h>
+
 
 Manager manager;
 StateManager states;

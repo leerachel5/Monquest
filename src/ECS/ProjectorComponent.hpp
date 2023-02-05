@@ -3,73 +3,32 @@
 
 #include "ECS.hpp"
 #include "Animation.hpp"
-#include "TransformComponent.hpp"
 #include <unordered_map>
+#include <SDL2/SDL.h>
+
+class TransformComponent;
+
 
 class ProjectorComponent : public Component {
 public:
-    ProjectorComponent() {}
-    ProjectorComponent(bool isAnimated) : animated{isAnimated} {}
-    ~ProjectorComponent() {}
+    ProjectorComponent();
+    ProjectorComponent(bool isAnimated);
+    ~ProjectorComponent();
     
     // Main loop functions
-    void init() override {
-        transform = &entity->getComponent<TransformComponent>();
-        
-        srcRect.x = srcRect.y = 0;
-        srcRect.w = transform->width;
-        srcRect.h = transform->height;
-    }
-    
-    void update() override {
-        if (animated) {
-            srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
-            srcRect.y = animIndex * transform->height;
-        }
-        
-        if (!fixedX)
-            destRect.x = static_cast<int>(transform->position.x) - Game::camera.x;
-        if (!fixedY)
-            destRect.y = static_cast<int>(transform->position.y) - Game::camera.y;
-        if (!fixedW)
-            destRect.w = transform->width * transform->scale;
-        if (!fixedH)
-            destRect.h = transform->height * transform->scale;
-    }
+    void init() override;
+    void update() override;
     
     // Animations
-    void AddAnimation(std::string animName, int index, int frames, int speed) {
-        Animation anim = Animation(index, frames, speed);
-        animations.emplace(animName, anim);
-    }
-    
-    void PlayAnimation(std::string animName) {
-        animIndex = animations[animName].index;
-        frames = animations[animName].frames;
-        speed = animations[animName].speed;
-    }
-    
-    void ToggleAnimation(bool flag) {
-        animated = flag;
-    }
+    void AddAnimation(std::string animName, int index, int frames, int speed);
+    void PlayAnimation(std::string animName);
+    void ToggleAnimation(bool flag);
     
     // Mutator member functions
-    void setXToPercentOfWindow(int percent) {
-        destRect.x = Game::windowW * percent / 100;
-        fixedX = true;
-    }
-    void setYToPercentOfWindow(int percent) {
-        destRect.y = Game::windowH * percent / 100;
-        fixedY = true;
-    }
-    void setWidthToPercentOfWindow(int percent) {
-        destRect.w = Game::windowW * percent / 100;
-        fixedW = true;
-    }
-    void setHeightToPercentOfWindow(int percent) {
-        destRect.h = Game::windowH * percent / 100;
-        fixedH = true;
-    }
+    void setXToPercentOfWindow(int percent);
+    void setYToPercentOfWindow(int percent);
+    void setWidthToPercentOfWindow(int percent);
+    void setHeightToPercentOfWindow(int percent);
     
     
 public:

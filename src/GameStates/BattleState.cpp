@@ -1,6 +1,12 @@
 #include "BattleState.hpp"
-#include "../WidgetManager.hpp"
+#include "../Game.hpp"
 #include "OverworldState.hpp"
+#include "../TextureManager.hpp"
+#include "../AssetManager.hpp"
+#include "../WidgetManager.hpp"
+#include "../CreatureManager.hpp"
+#include "../ECS/Components.hpp"
+
 
 extern CreatureManager* creatures;
 

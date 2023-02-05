@@ -1,6 +1,6 @@
 #include "PartyComponent.hpp"
 #include "SpriteComponent.hpp"
-//#include "Game.hpp"
+#include "CreatureManager.hpp"
 
 extern CreatureManager* creatures;
 

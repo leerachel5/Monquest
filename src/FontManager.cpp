@@ -1,10 +1,11 @@
 #include "FontManager.hpp"
 #include "Game.hpp"
 #include <iostream>
+#include <SDL2_ttf/SDL_ttf.h>
 
 
-TTF_Font *FontManager::LoadFont(const char *path, int fontSize) {
-    TTF_Font* f = TTF_OpenFont(path, fontSize);
+_TTF_Font *FontManager::LoadFont(const char *path, int fontSize) {
+    _TTF_Font* f = TTF_OpenFont(path, fontSize);
     if (f == NULL) {
         std::cout << "Could not load font at path \"" << path << "\"" << std::endl;
         exit(1);
@@ -12,7 +13,7 @@ TTF_Font *FontManager::LoadFont(const char *path, int fontSize) {
     return f;
 }
 
-SDL_Texture *FontManager::SetText(TTF_Font* font, int fontSize, std::string text, SDL_Color textColor) {
+SDL_Texture *FontManager::SetText(_TTF_Font* font, int fontSize, std::string text, SDL_Color textColor) {
     TTF_SetFontSize(font, fontSize);
     
     SDL_Surface* surf = TTF_RenderText_Blended(font, text.c_str(), textColor);

@@ -1,6 +1,10 @@
 #include "OverworldState.hpp"
-#include "../Collision.hpp"
+#include "../Game.hpp"
 #include "../StateManager.hpp"
+#include "../MapManager.hpp"
+#include "../Collision.hpp"
+#include "../Map.hpp"
+#include "../ECS/Components.hpp"
 #include <sstream>
 
 extern StateManager states;

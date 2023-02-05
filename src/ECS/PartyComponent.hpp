@@ -2,7 +2,9 @@
 #define PartyComponent_hpp
 
 #include "ECS.hpp"
-#include "CreatureManager.hpp"
+#include "Creature.hpp"
+
+using CreatureID = std::size_t;
 
 
 class PartyComponent : public Component {

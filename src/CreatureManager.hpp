@@ -1,8 +1,11 @@
 #ifndef CreatureManager_hpp
 #define CreatureManager_hpp
 
-#include "ECS/Creature.hpp"
 #include <unordered_map>
+#include <string>
+
+
+class Creature;
 
 using CreatureID = std::size_t;
 

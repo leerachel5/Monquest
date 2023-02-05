@@ -1,4 +1,5 @@
 #include "StateManager.hpp"
+#include "GameStates/GameStates.hpp"
 
 
 const std::string StateManager::START_STATE = "overworld";

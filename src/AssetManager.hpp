@@ -1,12 +1,12 @@
 #ifndef AssetManager_hpp
 #define AssetManager_hpp
 
-#include <SDL2_ttf/SDL_ttf.h>
 #include <map>
 #include <string>
-#include "ECS/ECS.hpp"
-#include "TextureManager.hpp"
-#include "FontManager.hpp"
+
+class SDL_Texture;
+class _TTF_Font;
+
 
 class AssetManager {
 public:
@@ -18,11 +18,11 @@ public:
     SDL_Texture* GetTexture(std::string id);
     
     void AddFont(std::string id, std::string path, int fontSize);
-    TTF_Font* GetFont(std::string id);
+    _TTF_Font* GetFont(std::string id);
     
 private:
     std::map<std::string, SDL_Texture*> textures;
-    std::map<std::string, TTF_Font*> fonts;
+    std::map<std::string, _TTF_Font*> fonts;
 };
 
 #endif /* AssetManager_hpp */

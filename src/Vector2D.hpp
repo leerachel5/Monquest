@@ -1,7 +1,8 @@
 #ifndef Vector2D_hpp
 #define Vector2D_hpp
 
-#include <iostream>
+#include <ostream>
+
 
 class Vector2D {
 public:

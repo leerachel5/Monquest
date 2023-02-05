@@ -1,6 +1,8 @@
 #include "MainMenuState.hpp"
+#include "../Game.hpp"
 #include "../StateManager.hpp"
 #include "../WidgetManager.hpp"
+#include "Components.hpp"
 
 extern StateManager states;
 

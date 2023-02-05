@@ -2,6 +2,7 @@
 #define BattleState_hpp
 
 #include "GameState.hpp"
+#include <SDL2/SDL.h>
 
 
 class BattleState : public GameState {

@@ -1,4 +1,8 @@
 #include "AssetManager.hpp"
+#include "TextureManager.hpp"
+#include "FontManager.hpp"
+#include <SDL2_ttf/SDL_ttf.h>
+
 
 AssetManager::AssetManager() {}
 
@@ -20,6 +24,6 @@ void AssetManager::AddFont(std::string id, std::string path, int fontSize) {
     fonts.emplace(id, FontManager::LoadFont(path.c_str(), fontSize));
 }
 
-TTF_Font* AssetManager::GetFont(std::string id) {
+_TTF_Font* AssetManager::GetFont(std::string id) {
     return fonts.at(id);;
 }
